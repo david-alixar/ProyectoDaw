@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome!</title>
+</head>
+<body>
+	<h1>Inicio</h1>
+	<h4>Panel de control de usuario</h4>
+	<p>Bienvenido, </p>
+	<p th:text="${session.user.username}" th:unless="${session == null}"> . </p>
+	
+	<button><a href="/login">Productos</a></button>
+	<button><a href="/login">Cambiar de usuario</a></button>
+	<button><a href="/update">Cambiar contraseña</a></button>
+	<button><a href="/delete">Eliminar usuario</a></button>
+	
+
+	
+	
+</body>
+</html>

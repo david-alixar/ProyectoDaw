@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Delete user</title>
+	<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+	<form th:action="@{/deleteUser}" th:object="${user}" method="post">
+	
+		<label>Nombre del usuario</label>
+		<input type="text" th:field="*{username}"/>
+	
+		<input type="submit" value="Eliminar"/>
+	</form>
+	
+	<button><a href="/">Inicio</a></button>
+	<button><a href="/login">Iniciar sesión</a></button>
+	<button><a href="/register">Registrar usuario</a></button>
+	<button><a href="/update">Cambiar contraseña</a></button>
+	
+	<p th:text="${session.user.username}" th:unless="${session == null}"> . </p>
+	
+</body>
+</html>

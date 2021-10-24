@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Change password</title>
+	<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+	<form th:action="@{/saveUpdate}" th:object="${user}" method="post">
+	
+		
+		<label>Password</label>
+		<input type="text" th:field="*{password}"/>
+		<br/>
+	
+		<input type="submit" value="Update"/>
+	</form>
+	<button><a href="/">Inicio</a></button>
+	<button><a href="/login">Iniciar sesión</a></button>
+	<button><a href="/register">Registrar usuario</a></button>
+	<button><a href="/delete">Eliminar usuario</a></button>
+	
+	<p th:text="${session.user.username}" th:unless="${session == null}"> . </p>
+	
+</body>
+</html>
