@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Users</title>
+<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+
+	Customers:
+
+	<table>
+		<tr>
+		<th>Username</th>
+		<th>Name</th>
+		<th>Lastname</th>
+		<th>Address</th>
+		<th>Phone</th>
+		<th>Country</th>
+		<th>State</th>
+		<th>Postalcode</th>
+		</tr>
+		<tbody>
+			<tr th:each="customer : ${customers}"
+			th:style="${customerStat.odd}? 'background-color: lightgrey;':'background-color: beige'" 
+	                    	th:alt-title="${customerStat.even}? 'even' : 'odd'">
+				<td th:text="${customer.Username}"></td>
+				<td th:text="${customer.Name}"></td>
+				<td th:text="${customer.Lastname}"></td>
+				<td th:text="${customer.Address}"></td>
+				<td th:text="${customer.Phone}"></td>
+				<td th:text="${customer.Country}"></td>
+				<td th:text="${customer.State}"></td>
+				<td th:text="${customer.Postalcode}"></td>
+				<td><a th:href="@{'/delete/'+${customer.Username}}">Eliminar a este usuario</a></td>
+			</tr>
+	</table>
+	<button><a href="/inicio">Inicio</a></button>
+
+
+
+</body>
+</html>

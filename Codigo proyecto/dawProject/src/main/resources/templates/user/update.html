@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Update</title>
+	<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<h3>Introduzca los datos que desea cambiar, dejando en blanco los que desee mantener</h3>
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+
+	<form th:action="@{/saveUpdate}" th:object="${update}" method="post">
+	
+		<label>Contraseña antigua</label>
+		<input type="password" th:field="*{passwordOld}"/>
+		<br/>
+		<label>Nueva contraseña</label>
+		<input type="password" th:field="*{password}"/>
+		<br/>
+		<label>Repita la nueva contraseña</label>
+		<input type="password" th:field="*{password2}"/>
+		<br/>
+		<label>Nombre</label>
+		<input type="text" th:field="*{name}"/>
+		<br/>
+		<label>Apellidos</label>
+		<input type="text" th:field="*{lastname}"/>
+		<br/>
+		<label>Email</label>
+		<input type="text" th:field="*{email}"/>
+		<br/>
+		<label>Dirección</label>
+		<input type="text" th:field="*{address}"/>
+		<br/>
+		<label>Teléfono</label>
+		<input type="text" th:field="*{phone}"/>
+		<br/>
+		<label>Ciudad</label>
+		<input type="text" th:field="*{city}"/>
+		<br/>
+		<label>Código postal</label>
+		<input type="text" th:field="*{postalcode}"/>
+		<br/>
+		<label>País</label>
+		<input type="text" th:field="*{country}"/>
+		<br/>
+		<label>Estado</label>
+		<input type="text" th:field="*{state}"/>
+		<br/>
+	
+		<input type="submit" value="Update"/>
+	</form>
+	<button><a href="/">Inicio</a></button>
+	<button><a href="/login">Iniciar sesión</a></button>
+	<button><a href="/register">Registrar usuario</a></button>
+	<button><a href="/delete">Eliminar usuario</a></button>
+	
+	
+</body>
+</html>

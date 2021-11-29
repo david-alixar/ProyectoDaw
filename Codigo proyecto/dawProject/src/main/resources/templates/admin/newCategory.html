@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>New category</title>
+	<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+
+	<form th:action="@{/saveCategory}" th:object="${category}" method="post">
+	
+		<label>Category name</label>
+		<input type="text" th:field="*{categorieName}"/>
+		<br/>
+		<label>Description</label>
+		<input type="text" th:field="*{description}"/>
+		<br/>
+		
+	
+		<input type="submit" value="Guardar"/>
+	</form>
+	
+</body>
+</html>

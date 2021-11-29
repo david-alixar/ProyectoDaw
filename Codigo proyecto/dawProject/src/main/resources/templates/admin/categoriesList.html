@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Categories</title>
+<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+
+	Categories:
+
+	<table>
+		<tr>
+		<th>Id</th> 
+		<th>Name</th>
+		<th>Description</th>
+		</tr>
+		<tbody>
+			<tr th:each="category : ${categories}"
+			th:style="${categoryStat.odd}? 'background-color: lightgrey;':'background-color: beige'" 
+	                    	th:alt-title="${categoryStat.even}? 'even' : 'odd'">
+				<td th:text="${category.categorieId}"></td>
+				<td th:text="${category.categorieName}"></td>
+				<td th:text="${category.description}"></td>
+			</tr>
+	</table>
+	<button><a href="/inicio">Inicio</a></button>
+	<button><a href="/newCategory">Añadir nueva categoría</a></button>
+	
+	
+
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mi carrito</title>
+<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+
+	Orders:
+
+	<table>
+		<tr>
+		<th>Nombre</th> 
+		<th>Fecha</th>
+		<th>Nº de seguimiento</th>
+		<th>Total</th>
+		<th>Estado</th>
+		</tr>
+		<tbody>
+			<tr th:each="order : ${orders}"
+			th:style="${orderStat.odd}? 'background-color: lightgrey;':'background-color: beige'" 
+	                    	th:alt-title="${orderStat.even}? 'even' : 'odd'">
+				<td th:text="${order.customer.username}"></td>
+				<td th:text="${order.date}"></td>
+				<td th:text="${order.trackingNumber}"></td>
+				<td th:text="${order.total}"></td>
+				<td th:text="${order.status}"></td>
+				<td><a th:href="@{'/detailOrder/'+${order.orderNumber}}">Ver detalles del pedido</a></td>
+				<!--<td><a th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td> -->
+				<td><a th:if="${order.status == 'Finalizado' and user.role == 'user'}" th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td>
+				<!--<div th:if="${mensaje != null}" th:text="${mensaje}"> -->
+				
+				
+				
+			</tr>
+	</table>
+	<button><a href="/inicio">Inicio</a></button>
+	<button><a href="/listProducts">Productos</a></button>
+	
+	
+	
+
+
+</body>
+</html>

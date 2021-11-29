@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<meta charset="UTF-8">
+<title>Products</title>
+<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+	<div th:if="${message != null}" th:text="${message}">
+	</div>
+
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<!-- MENÚ SUPERIOR -->
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/inicio">
+				<img src="img/2.png" alt="Online Store" style="width:50px;" class="rounded-pill">
+				<img src="img/3.png" alt="Online Store" style="width:50px;">
+			</a>
+		</div>
+		<div class="container-fluid">
+			<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link active" href="/login">Iniciar sesión</a>
+	
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/register">Registrar usuario</a>
+			</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="p-5">
+		
+
+		<h1> Productos disponibles </h1> 
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Nombre</th> 
+					<th>Marca</th>
+					<th>Modelo</th>
+					<th>Descripción</th>
+					<th>Precio</th>
+					<th>Disponibles</th>
+					<th>Año</th>
+					</tr>
+			</thead>
+			<tbody>
+				<tr th:each="product : ${products}"
+				th:style="${productStat.odd}? 'background-color: lightgrey;':'background-color: beige'" 
+								th:alt-title="${productStat.even}? 'even' : 'odd'">
+					<td th:text="${product.productName}"></td>
+					<td th:text="${product.brand}"></td>
+					<!--<td th:text="${product.model}"></td>-->
+					<td><a th:href="@{'/productDetail/'+${product.productCode}}"th:text="${product.model}"></a></td>
+					<td th:text="${product.description}"></td>
+					<td th:text="${product.price}"></td>
+					<td th:text="${product.productAvailable}"></td>
+					<td th:text="${product.year}"></td>
+					<!--<td><a th:href="@{'/buyProduct/'+${product.productCode}}">Añadir al carrito</a></td>-->
+					<td><a th:if="${user == null or user.role == 'user'}" th:href="@{'/buyProduct/'+${product.productCode}}">Añadir al carrito</a></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h1> Próximamente... </h1> 
+
+		<div class="p-5 d-flex">
+			<div class="card m-2" style="width:200px">
+				<img class="card-img-top" src="img/123-intel-core-i7-11700k-35-ghz.webp" alt="Card image" style="width:100%">
+				<div class="card-body">
+				  <h4 class="card-title">Intel Core i7</h4>
+				</div>
+			</div>
+			<div class="card m-2" style="width:200px">
+				<img class="card-img-top" src="img/168-amd-ryzen-7-5800x-38ghz.webp" alt="Card image" style="width:100%">
+				<div class="card-body">
+				  <h4 class="card-title">AMD Ryzen 7</h4>
+				</div>
+			</div>
+			<div class="card m-2" style="width:200px">
+				<img class="card-img-top" src="img/1153-msi-rtx-3080-ti-gaming-x-trio-12gb-gddr6x.webp" alt="Card image" style="width:100%">
+				<div class="card-body">
+				  <h4 class="card-title">MSI RTX-3080 Gaming Trio</h4>
+				</div>
+			</div>
+			<div class="card m-2" style="width:200px">
+				<img class="card-img-top" src="img/1316-msi-z490-a-pro.webp" alt="Card image" style="width:100%">
+				<div class="card-body">
+				  <h4 class="card-title">MSI Z490 Pro</h4>
+				</div>
+			</div>
+			<div class="card m-2" style="width:200px">
+				<img class="card-img-top" src="img/111-corsair-vengeance-rgb-pro-sl-ddr4-3600-pc4-28800-32gb-2x16gb-cl18.webp" alt="Card image" style="width:100%">
+				<div class="card-body">
+				  <h4 class="card-title">Corsair DDR4 32GB</h4>
+				</div>
+			</div>
+		</div>
+
+		<div class="p-5">
+			<button type="button" class="btn btn-dark"><a href="/inicio">Inicio</a></button>
+			<button type="button" class="btn btn-dark"><a href="/login">Iniciar sesión</a></button>
+			<button type="button" class="btn btn-dark"><a href="/register">Registrar usuario</a></button>
+		</div>
+
+	</div>
+		
+
+	<footer class="bg-dark text-center text-white">
+		<!-- FOOTER -->
+		<div class="container p-4 pb-0">
+		
+		  <section>
+			<a class="navbar-brand" href="/inicio">
+				<img src="img/2.png" alt="Online Store" style="width:50px;" class="rounded-pill">
+				<img src="img/3.png" alt="Online Store" style="width:50px;">
+			  </a>
+		  </section>
+		</div>
+	  
+		<!-- FOOTER Copyright -->
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+		  © 2021 Copyright:
+		  <a class="text-white" href="https://mdbootstrap.com/">OnlineStore.com</a>
+		</div>
+	</footer>	
+	
+</body>
+</html>

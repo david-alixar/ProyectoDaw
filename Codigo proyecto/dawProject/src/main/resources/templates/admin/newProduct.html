@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>New product</title>
+	<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+
+	<form th:action="@{/saveProduct}" th:object="${altaProductoForm}" method="post">
+	
+		<label>Category Id</label>
+		<input type="text" th:field="*{idCategoria}"/>
+		<br/>
+		<label>Product name</label>
+		<input type="text" th:field="*{nombreProducto}"/>
+		<br/>
+		<label>Description</label>
+		<input type="text" th:field="*{descripcion}"/>
+		<br/>
+		<label>Image</label>
+		<input type="text" th:field="*{imagen}"/>
+		<br/>
+		<label>Price</label>
+		<input type="text" th:field="*{precio}"/>
+		<br/>
+		<label>Quantity</label>
+		<input type="text" th:field="*{cantidad}"/>
+		<br/>
+		<label>Brand</label>
+		<input type="text" th:field="*{marca}"/>
+		<br/>
+		<label>Model</label>
+		<input type="text" th:field="*{modelo}"/>
+		<br/>
+		<label>Year</label>
+		<input type="text" th:field="*{year}"/>
+		<br/>
+		
+	
+		<input type="submit" value="Guardar"/>
+	</form>
+	
+</body>
+</html>

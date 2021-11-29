@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<meta charset="UTF-8">
+<title>OnlineStore</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<!-- MENÚ SUPERIOR -->
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/inicio">
+			  <img src="img/2.png" alt="Online Store" style="width:50px;" class="rounded-pill">
+			  <img src="img/3.png" alt="Online Store" style="width:50px;"/>
+			</a>
+		</div>
+		<div class="container-fluid">
+		  <ul class="navbar-nav">
+			<li class="nav-item">
+			  <a class="nav-link active" href="/login">Iniciar sesión</a>
+
+			</li>
+		   <li class="nav-item">
+			  <a class="nav-link" href="/register">Registrar usuario</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="/listProducts">Productos</a>
+			</li>
+		  </ul>
+		</div>
+	</nav>
+	<div style="background-image: url('img/0-2.jpg'); height: 1000px">
+		<div class="text-light p-5">
+			<h1 class="h1">Bienvenido a Online Store</h1>
+			<h1 class="h2">Las mejores marcas</h1>
+			<h1 class="h2">Los mejores precios</h1>
+		</div>
+		
+		<div th:if="${message != null}" th:text="${message}">
+		</div>
+		
+		
+	</div>
+
+<!--<div th:switch="${session.user.role}"> 
+  <p th:case="'admin'"><a href="/listUsers">Ver usuarios</a></p>
+  <p th:case="'user'">User is a manager</p>
+  <p th:case=null>User is some other thing</p> 
+</div> -->
+<footer class="bg-dark text-center text-white">
+	<!-- FOOTER -->
+	<div class="container p-4 pb-0">
+	
+	  <section>
+		<a class="navbar-brand" href="/inicio">
+			<img src="img/2.png" alt="Online Store" style="width:50px;" class="rounded-pill">
+			<img src="img/3.png" alt="Online Store" style="width:50px;">
+		  </a>
+	  </section>
+	</div>
+  
+	<!-- FOOTER Copyright -->
+	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+	  © 2021 Copyright:
+	  <a class="text-white" href="https://mdbootstrap.com/">OnlineStore.com</a>
+	</div>
+</footer>	
+	
+	
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mi carrito</title>
+<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+
+	Detalle del pedido:
+
+	<table>
+		<tr>
+		<th>Nombre</th> 
+		<th>Marca</th>
+		<th>Modelo</th>
+		<th>Cantidad</th>
+		<th>Subtotal</th>
+		</tr>
+		<tbody>
+			<tr th:each="orderDetail : ${orderDetails}"
+			th:style="${orderDetailStat.odd}? 'background-color: lightgrey;':'background-color: beige'" 
+	                    	th:alt-title="${orderDetailStat.even}? 'even' : 'odd'">
+				<td th:text="${orderDetail.product.productName}"></td>
+				<td th:text="${orderDetail.product.brand}"></td>
+				<td th:text="${orderDetail.product.model}"></td>
+				<td th:text="${orderDetail.quantity}"></td>
+				<td th:text="${orderDetail.subtotal}"></td>
+				
+			</tr>
+	</table>
+	<button><a href="/inicio">Inicio</a></button>
+	<button><a href="/listProducts">Productos</a></button>
+	<button><a href="/orders">Mis pedidos</a></button>
+	
+	
+	
+
+
+</body>
+</html>
