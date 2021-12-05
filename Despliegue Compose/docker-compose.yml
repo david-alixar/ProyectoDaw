@@ -22,10 +22,10 @@ services:
      - ./tomcat/context.xml:/usr/local/tomcat/conf/Catalina/localhost/host-manager.xml:ro
     #  - ./tomcat/RestServerCarLicense.war:/usr/local/tomcat/webapps/RestServerCarLicense.war
     #  - ./tomcat/spring-starter-project.war:/usr/local/tomcat/webapps/spring-starter-project.war
-     - ./tomcat/proyecto.war:/usr/local/tomcat/webapps/proyecto.war
-     - ./tomcat/prueba.war:/usr/local/tomcat/webapps/prueba.war
+     - ./tomcat/dawProject.war:/usr/local/tomcat/webapps/dawProject.war
+     - ./tomcat/proyecto2.war:/usr/local/tomcat/webapps/proyecto2.war
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql2:3306/universitylibrary2?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql2:3306/online_store?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       
     depends_on:
       - mysql2
