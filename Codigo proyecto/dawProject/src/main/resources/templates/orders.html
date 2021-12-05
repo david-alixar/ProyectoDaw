@@ -34,13 +34,11 @@
 				<td th:text="${order.status}"></td>
 				<td><a th:href="@{'/detailOrder/'+${order.orderNumber}}">Ver detalles del pedido</a></td>
 				<!--<td><a th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td> -->
-				<td><a th:if="${order.status == 'Finalizado' and user.role == 'user'}" th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td>
-				<!--<div th:if="${mensaje != null}" th:text="${mensaje}"> -->
-				
-				
+				<td><a th:if="${order.status == 'Finalizado' and user.role == 'user'}" th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td>	
 				
 			</tr>
 	</table>
+
 	<button><a href="/inicio">Inicio</a></button>
 	<button><a href="/listProducts">Productos</a></button>
 	

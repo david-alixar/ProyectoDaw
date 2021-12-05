@@ -39,6 +39,7 @@
 				<td th:text="${customer.State}"></td>
 				<td th:text="${customer.Postalcode}"></td>
 				<td><a th:href="@{'/delete/'+${customer.Username}}">Eliminar a este usuario</a></td>
+				<td><a th:href="@{'/reset/'+${customer.Username}}">Resetear contraseña</a></td>
 			</tr>
 	</table>
 	<button><a href="/inicio">Inicio</a></button>

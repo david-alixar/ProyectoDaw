@@ -1,10 +1,12 @@
 package com.dawProject.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dawProject.model.OrderDetail;
 import com.dawProject.model.Product;
 import com.dawProject.repository.ProductRepository;
 
@@ -16,6 +18,16 @@ public class ProductService {
 	
 	public List<Product> findAll() {
 		return productRepository.findAll();
+	}
+	
+	public List<Product> findAllCategory(Integer categoryId) {
+		List<Product> list = new ArrayList<>();
+		for (Product p: productRepository.findAll()) {
+			if (p.getCategory().getCategorieId()== categoryId) {
+				list.add(p);
+			}
+		}
+		return list;
 	}
 	
 	public Product findByProductCode(Integer productCode) {

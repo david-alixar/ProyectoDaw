@@ -32,9 +32,11 @@
 				<td th:text="${orderDetail.product.model}"></td>
 				<td th:text="${orderDetail.quantity}"></td>
 				<td th:text="${orderDetail.subtotal}"></td>
-				
 			</tr>
 	</table>
+	<h5>Total compra:</h5>
+	<p th:if="${total != null}" th:text="${total}"></p>
+
 	<button><a href="/inicio">Inicio</a></button>
 	<button><a href="/listProducts">Productos</a></button>
 	<button><a href="/finalizeOrder">Finalizar pedido</a></button>

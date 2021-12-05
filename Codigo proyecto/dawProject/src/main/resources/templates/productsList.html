@@ -11,10 +11,7 @@
 </head>
 <body>
 
-	<div th:if="${message != null}" th:text="${message}">
-	</div>
-
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
 		<!-- MENÚ SUPERIOR -->
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/inicio">
@@ -37,16 +34,20 @@
 
 	<div class="p-5">
 		
+		<div th:if="${message != null}" th:text="${message}">
+	</div>
 
+<div class = "p-5 mt-5">
 		<h1> Productos disponibles </h1> 
 
-		<table class="table table-hover">
+		<table class="table table-hover mt-5 mb-5">
 			<thead>
 				<tr>
 					<th>Nombre</th> 
 					<th>Marca</th>
 					<th>Modelo</th>
 					<th>Descripción</th>
+					<th>Categoría</th>
 					<th>Precio</th>
 					<th>Disponibles</th>
 					<th>Año</th>
@@ -54,24 +55,24 @@
 			</thead>
 			<tbody>
 				<tr th:each="product : ${products}"
-				th:style="${productStat.odd}? 'background-color: lightgrey;':'background-color: beige'" 
-								th:alt-title="${productStat.even}? 'even' : 'odd'">
+				th:style="${productStat.odd}? 'background-color: lightgrey;'">
 					<td th:text="${product.productName}"></td>
 					<td th:text="${product.brand}"></td>
 					<!--<td th:text="${product.model}"></td>-->
 					<td><a th:href="@{'/productDetail/'+${product.productCode}}"th:text="${product.model}"></a></td>
 					<td th:text="${product.description}"></td>
+					<td><a th:href="@{'/productListCategory/'+${product.category.categorieId}}"th:text="${product.category.categorieName}"></a></td>
 					<td th:text="${product.price}"></td>
 					<td th:text="${product.productAvailable}"></td>
 					<td th:text="${product.year}"></td>
 					<!--<td><a th:href="@{'/buyProduct/'+${product.productCode}}">Añadir al carrito</a></td>-->
 					<td><a th:if="${user == null or user.role == 'user'}" th:href="@{'/buyProduct/'+${product.productCode}}">Añadir al carrito</a></td>
+					<td><a th:if="${user != null and user.role == 'admin'}" th:href="@{'/updateProduct/'+${product.productCode}}">Editar producto</a></td>
 				</tr>
 			</tbody>
 		</table>
 		
-		<h1> Próximamente... </h1> 
-
+		<h1 class="mt-5" > Próximamente... </h1> 
 		<div class="p-5 d-flex">
 			<div class="card m-2" style="width:200px">
 				<img class="card-img-top" src="img/123-intel-core-i7-11700k-35-ghz.webp" alt="Card image" style="width:100%">
@@ -112,6 +113,9 @@
 		</div>
 
 	</div>
+
+</div>
+
 		
 
 	<footer class="bg-dark text-center text-white">
@@ -129,7 +133,7 @@
 		<!-- FOOTER Copyright -->
 		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
 		  © 2021 Copyright:
-		  <a class="text-white" href="https://mdbootstrap.com/">OnlineStore.com</a>
+		  <a class="text-white" href="/inicio">OnlineStore.com</a>
 		</div>
 	</footer>	
 	

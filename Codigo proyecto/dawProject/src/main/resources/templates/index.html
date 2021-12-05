@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <meta charset="UTF-8">
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <title>OnlineStore</title>
 </head>
 <body>
@@ -16,9 +17,9 @@
 		</div>
 		<div class="container-fluid">
 		  <ul class="navbar-nav">
+		<i style='font-size:24px'class='fas'> &#xf406; </i>
 			<li class="nav-item">
-			  <a class="nav-link active" href="/login">Iniciar sesión</a>
-
+			  <a class="nav-link active" href="/login" >Iniciar sesión</a>
 			</li>
 		   <li class="nav-item">
 			  <a class="nav-link" href="/register">Registrar usuario</a>
@@ -29,6 +30,7 @@
 		  </ul>
 		</div>
 	</nav>
+	<!-- CUERPO PRINCIPAL -->
 	<div style="background-image: url('img/0-2.jpg'); height: 1000px">
 		<div class="text-light p-5">
 			<h1 class="h1">Bienvenido a Online Store</h1>
@@ -47,6 +49,7 @@
   <p th:case="'user'">User is a manager</p>
   <p th:case=null>User is some other thing</p> 
 </div> -->
+
 <footer class="bg-dark text-center text-white">
 	<!-- FOOTER -->
 	<div class="container p-4 pb-0">
@@ -62,7 +65,7 @@
 	<!-- FOOTER Copyright -->
 	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
 	  © 2021 Copyright:
-	  <a class="text-white" href="https://mdbootstrap.com/">OnlineStore.com</a>
+	  <a class="text-white" href="/inicio">OnlineStore.com</a>
 	</div>
 </footer>	
 	

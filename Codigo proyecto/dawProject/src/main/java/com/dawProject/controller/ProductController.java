@@ -114,9 +114,43 @@ public class ProductController {
 			Model model,
 			@PathVariable("productCode") int productCode) {
 		Product product = productService.findByProductCode(productCode);
+		Product product2 = new Product();
 		
 		model.addAttribute("product", product);
+		model.addAttribute("productBuy", product2);
 		return "/productDetailVist";
+		
+	}
+	
+	@GetMapping("/updateProduct/{productCode}")
+	public String updateProduct(
+			Model model,
+			@PathVariable("productCode") int productCode) {
+		Product product = new Product();
+		product.setProductCode(productCode);
+		
+		model.addAttribute("product", product);
+		return "/admin/updateProduct";
+		
+	}
+	
+	@PostMapping("/saveUpdateProduct")
+	public String saveUpdateProduct(@ModelAttribute("product") Product product, Model model) {
+		productService.save(product);
+		model.addAttribute("message", "Hecho! Producto actualizado");
+		model.addAttribute("products", productService.findAll());
+		return "productsList/user/welcomeAdmin";
+	}
+	
+	@GetMapping("/productListCategory/{category}")
+	public String productListCategory(
+			Model model,
+			@PathVariable("category") int category) {
+		Product product = productService.findByProductCode(category);
+		
+		model.addAttribute("message", "Hecho! Vista filtrada por categoría");
+		model.addAttribute("products", productService.findAllCategory(category));
+		return "/productsList";	
 		
 	}
 	

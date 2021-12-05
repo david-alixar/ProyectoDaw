@@ -55,6 +55,7 @@ public class OrderController {
 		}
 		else {
 			model.addAttribute("orderDetails", orderDetailService.findCart(order.getOrderNumber()));
+			model.addAttribute("total", order.getTotal());
 		}
 		return "/user/cart";	
 	}
@@ -117,9 +118,101 @@ public class OrderController {
 		orderDetailService.save(orderDetail);
 		model.addAttribute("orderDetails", orderDetailService.findCart(order.getOrderNumber()));
 		model.addAttribute("message", "Producto añadido al carrito con éxito");
+		model.addAttribute("total", order.getTotal());
 		return "/user/cart";
 		
 	}
+	
+	@PostMapping("/buyProductVist")
+	public String buyProductVist(@ModelAttribute("productBuy") Product productBuy, Model model, HttpServletRequest request) {
+		User user = obtenerUsuarioSesion(request);
+		if (user == null) {
+			return "redirect:/login";
+		}
+		Customer customer = customerService.findByusername(user.getUsername());
+		
+		Order order = orderService.findByCustomerPending(customer.getUsername());
+		
+		if (order == null) {
+			order = new Order(LocalDate.now().toString(),"No finalizado", "Vacío", 0, customer);
+			orderService.save(order);
+		}
+		
+		Product product = productService.findByProductCode(productBuy.getProductCode());
+		OrderDetail orderDetail = orderDetailService.findByOrderDetailIdProduct(productBuy.getProductCode(), order.getOrderNumber());
+		int productAvailable = product.getProductAvailable();
+		float price = product.getPrice() * productBuy.getProductAvailable();
+		
+		if (productAvailable >= productBuy.getProductAvailable()) { 
+		
+			if(orderDetail == null) {
+				orderDetail = new OrderDetail(productBuy.getProductAvailable(), product.getPrice(), product, order);
+			} else {
+				orderDetail.setQuantity(orderDetail.getQuantity() + productBuy.getProductAvailable());
+				orderDetail.setSubtotal(orderDetail.getSubtotal() + price);
+			}
+		} else {
+			model.addAttribute("message", "Error! Cantidad insuficiente para el producto seleccionado");
+			model.addAttribute("products", productService.findAll());
+			return "/productsList";
+		}
+		product.setProductAvailable(productAvailable - productBuy.getProductAvailable());
+		productService.save(product);
+		order.setTotal(order.getTotal() + price);
+		orderService.save(order);
+		orderDetailService.save(orderDetail);
+		model.addAttribute("orderDetails", orderDetailService.findCart(order.getOrderNumber()));
+		model.addAttribute("message", "Producto añadido al carrito con éxito");
+		model.addAttribute("total", order.getTotal());
+		return "/user/cart";
+	}
+	
+//	@GetMapping("/buyProductVist/{productCode}/{quantity}")
+//	public String buyProductVist(
+//			Model model,
+//			@PathVariable("productCode") int productCode, @PathVariable("quantity") int quantity, HttpServletRequest request) {
+//		User user = obtenerUsuarioSesion(request);
+//		if (user == null) {
+//			return "redirect:/login";
+//		}
+//		Customer customer = customerService.findByusername(user.getUsername());
+//		
+//		Order order = orderService.findByCustomerPending(customer.getUsername());
+//		
+//		if (order == null) {
+//			order = new Order(LocalDate.now().toString(),"No finalizado", "Vacío", 0, customer);
+//			orderService.save(order);
+//		}
+//		
+//		Product product = productService.findByProductCode(productCode);
+//		OrderDetail orderDetail = orderDetailService.findByOrderDetailIdProduct(productCode, order.getOrderNumber());
+//		int productAvailable = product.getProductAvailable();
+//		float price = product.getPrice() * quantity;
+//		
+//		if (productAvailable >= quantity) { 
+//		
+//			if(orderDetail == null) {
+//				orderDetail = new OrderDetail(quantity, product.getPrice(), product, order);
+//			} else {
+//				orderDetail.setQuantity(orderDetail.getQuantity() + quantity);
+//				orderDetail.setSubtotal(orderDetail.getSubtotal() + price);
+//			}
+//		} else {
+//			model.addAttribute("message", "Error! Cantidad insuficiente para el producto seleccionado");
+//			model.addAttribute("products", productService.findAll());
+//			return "/productsList";
+//		}
+//		product.setProductAvailable(productAvailable -quantity);
+//		productService.save(product);
+//		order.setTotal(order.getTotal() + price);
+//		orderService.save(order);
+//		orderDetailService.save(orderDetail);
+//		model.addAttribute("orderDetails", orderDetailService.findCart(order.getOrderNumber()));
+//		model.addAttribute("message", "Producto añadido al carrito con éxito");
+//		model.addAttribute("total", order.getTotal());
+//		return "/user/cart";
+//		
+//	}
 	
 	@GetMapping("/dropCart")
 	public String dropCart(
@@ -173,6 +266,7 @@ public class OrderController {
 		Order order = orderService.findByOrderNumber(orderNumber);
 		
 		orderService.changeStatus("Pagado", order);
+		model.addAttribute("message", "Información del pedido actualizada con éxito");
 		model.addAttribute("orders", orderService.findAllByCustomer(user.getUsername()));
 		
 		return "/orders";

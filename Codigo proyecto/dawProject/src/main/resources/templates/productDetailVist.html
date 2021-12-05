@@ -12,12 +12,30 @@
 <body>
 
 <p th:text="${product.productName}"> </p>
+<p th:text="${product.brand}"> </p> 
+<p th:text="${product.model}"> </p> 
 <p th:text="${product.description}"> </p>
+<p> <a th:href="@{'/productListCategory/'+${product.category.categorieId}}"th:text="${product.category.categorieName}"></a></p>
+<p th:text="${product.price}"></p>
+<img th:if="${product.picture != ''}" th:attr="src = ${product.picture}">
+<img th:if="${product.picture == ''}" src = "https://mvsccs.com/public/uploads/all/hwRJD.">
+															
+<p th:if="${product.picture != ''}" th:text="${product.picture}"> Producto agotado</p>
+<p th:text="${product.productAvailable}"></p>
+<p th:text="${product.year}"></p>
 
-  <label for="quantity">Cantidad:</label>
-  <input type="number" id="quantity" name="quantity" min="1" max="${product.productAvailable}">
-	
-<a th:href="@{'/buyProduct/'+${product.productCode}}">Añadir al carrito > </a>
+
+<form th:action="@{/buyProductVist}" th:object="${productBuy}" method="post">
+  <label> Cantidad:</label>
+  <input type="number" id="quantity" th:field="*{productAvailable}" value="1" name="quantity"  min="1" th:attr="max = ${product.productAvailable}">
+  <input th:attr="value = ${product.productCode}" th:name="productCode" type="hidden" />
+  <input type="submit" value="Añadir al carrito"/>
+  <p th:if="${product.productAvailable == 0}"> Producto agotado</p>
+</form>  
+  <!-- th:field="${quantity}" -->
+	<!--th:attr="value = ${product.productCode}-->
+<!--<a th:href="@{'/buyProduct/'+${product.productCode}+'/'+${product.productName}}">Añadir al carrito > </a>-->
+<a th:href="@{'/buyProduct/'+${product.productCode}+'/'+${quantityId}}">Añadir al carrito > </a>
 <!--th:href="@{/hello(pid=1,id=${person.id})}"-->	
 	
 </body>

@@ -104,6 +104,10 @@ public class UserController {
 			customer.setAddress(update.getAddress());
 			actualizado += "Dirección actualizada con éxito\n";
 		}
+		if (!update.getName().equals("")) {
+			customer.setName(update.getName());
+			actualizado += "Nombre actualizada con éxito<br>";
+		}
 		if (!update.getCity().equals("")) {
 			customer.setCity(update.getCity());
 			actualizado += "Ciudad actualizada con éxito\n";
@@ -206,6 +210,25 @@ public class UserController {
 			//customerService.delete(customer);
 			model.addAttribute("customers", customerService.findAll());
 			model.addAttribute("message", "La cuenta del usuario " + user.getUsername() + " ha sido eliminada con éxito");
+			return "/admin/list";	
+		}
+		
+	}
+	
+	@GetMapping("/reset/{username}")
+	public String reset(
+			Model model,
+			@PathVariable("username") String username, HttpServletRequest request) {
+		User user = userService.findByusername(username);
+		
+		if (user == null) {
+			return "/admin/list";
+		}
+		else {
+			user.setPassword("123456");
+			userService.save(user);
+			model.addAttribute("customers", customerService.findAll());
+			model.addAttribute("message", "La contraseña del usuario " + user.getUsername() + " ha sido reseteada con éxito");
 			return "/admin/list";	
 		}
 		
