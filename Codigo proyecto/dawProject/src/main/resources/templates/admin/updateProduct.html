@@ -17,32 +17,40 @@
 
 	<form th:action="@{/saveUpdateProduct}" th:object="${product}" method="post">
 	
+		<label>Categoría</label>
+		<input readonly type="text" th:value="${product.category.categorieId}" th:name="category.categorieId"/>
+		<br/>
 		<label>Code</label>
 		<input readonly type="text" th:value="${product.productCode}" th:name="productCode"/>
 		<br/>
 		<label>Nombre</label>
-		<input type="text" th:field="*{productName}"/>
+		<input type="text" th:value="${product.productName}" th:name="productName"/>
 		<br/>
 		<label>Marca</label>
-		<input type="text" th:field="*{brand}"/>
+		<input type="text" th:value="${product.brand}" th:name="brand"/>
 		<br/>
 		<label>Modelo</label>
-		<input type="text" th:field="*{model}"/>
+		<input type="text" th:value="${product.model}" th:name="model"/>
 		<br/>
 		<label>Descripción</label>
-		<input type="text" th:field="*{description}"/>
+		<br/>
+		<!--<input type="text" th:value="${product.description}" th:name="description"/>-->
+		<textarea rows = "5" cols = "40" class="form-control" th:value="${product.description}" th:field = "*{description}"></textarea>
+		
 		<br/>
 		<label>Precio</label>
-		<input type="text" th:field="*{price}"/>
+		<input type="text" th:value="${product.price}" th:name="price"/>
 		<br/>
 		<label>Cantidad</label>
-		<input type="text" th:value="-1" th:name="productAvailable"/>
+		<input type="text" th:value="${product.productAvailable}" th:name="productAvailable"/>
 		<br/>
 		<label>Año</label>
-		<input type="text" th:field="*{year}"/>
+		<input type="text" th:value="${product.year}" th:name="year"/>
 		<br/>
 		<label>Imagen</label>
-		<input type="text" th:field="*{picture}"/>
+		<!--<input type="text" th:value="${product.picture}" th:name="picture"/>-->
+		<br/>
+		<textarea rows = "5" cols = "40" class="form-control" th:value="${product.picture}" th:field = "*{picture}"></textarea>
 		<br/>
 	
 		<input type="submit" value="Update"/>

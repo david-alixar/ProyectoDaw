@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <meta charset="UTF-8">
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
 <title>OnlineStore</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		<!-- MENÚ SUPERIOR -->
+<!-- MENÚ SUPERIOR -->
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">	
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/inicio">
 			  <img src="img/2.png" alt="Online Store" style="width:50px;" class="rounded-pill">
-			  <img src="img/3.png" alt="Online Store" style="width:50px;"/>
+			  <img src="img/3.png" alt="Online Store" style="width:50px;"class="rounded-pill"/>
 			</a>
 		</div>
-		<div class="container-fluid">
+		<div class="container-fluid  justify-content-end">
 		  <ul class="navbar-nav">
-		<i style='font-size:24px'class='fas'> &#xf406; </i>
 			<li class="nav-item">
-			  <a class="nav-link active" href="/login" >Iniciar sesión</a>
+			  <a class="nav-link active" href="/listProducts">Productos</a>
 			</li>
-		   <li class="nav-item">
-			  <a class="nav-link" href="/register">Registrar usuario</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link" href="/listProducts">Productos</a>
-			</li>
+			<div class="dropdown dropstart">
+   				 <button type="button" class="btn" data-bs-toggle="dropdown">
+      				<i class='fas fa-power-off' style='font-size:24px;color:lightgrey'></i>
+   				 </button>
+    					<ul class="dropdown-menu">
+    						<li>
+			 			 		<a class="dropdown-item" href="/login">Iniciar sesión</a>
+							</li> 
+							<li><hr class="dropdown-divider"></li>
+							<li>
+			 					 <a class="dropdown-item" href="/register">Registrarse</a>
+							</li>
+    					</ul>
+  			</div>	  
 		  </ul>
 		</div>
-	</nav>
-	<!-- CUERPO PRINCIPAL -->
-	<div style="background-image: url('img/0-2.jpg'); height: 1000px">
+</nav>
+<!-- CUERPO PRINCIPAL -->
+	<div style="background-image: url('img/0-2.jpg'); height: 1000px" class="p-5">
 		<div class="text-light p-5">
 			<h1 class="h1">Bienvenido a Online Store</h1>
 			<h1 class="h2">Las mejores marcas</h1>
@@ -57,7 +66,7 @@
 	  <section>
 		<a class="navbar-brand" href="/inicio">
 			<img src="img/2.png" alt="Online Store" style="width:50px;" class="rounded-pill">
-			<img src="img/3.png" alt="Online Store" style="width:50px;">
+			<img src="img/3.png" alt="Online Store" style="width:50px;" class="rounded-pill">
 		  </a>
 	  </section>
 	</div>

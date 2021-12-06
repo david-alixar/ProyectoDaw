@@ -77,6 +77,26 @@ public class OrderController {
 		return "/orders";
 	}
 	
+	@GetMapping("/manageOrder/{orderNumber}")
+	public String manageOrder(
+			Model model,
+			@PathVariable("orderNumber") int orderNumber) {
+		Order order = orderService.findByOrderNumber(orderNumber);
+		//order.setOrderNumber(orderNumber);
+		
+		model.addAttribute("order", order);
+		return "/admin/manageOrder";
+		
+	}
+	
+	@PostMapping("/manageOrderVist")
+	public String manageOrderVist(@ModelAttribute("product") Order order, Model model) {
+		order.setCustomer(customerService.findByusername(order.getCustomer().getUsername()));
+		orderService.save(order);
+		model.addAttribute("message", "Hecho! Pedido actualizado");
+		return "/admin/welcomeAdmin";
+	}
+	
 	@GetMapping("/buyProduct/{productCode}")
 	public String buyProduct(
 			Model model,

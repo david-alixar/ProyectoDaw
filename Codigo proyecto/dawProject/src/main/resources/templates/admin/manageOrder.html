@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Delete user</title>
+	<style>
+		a {
+		text-decoration:none}
+	</style>
+</head>
+<body>
+
+<h3>Introduzca los datos que desea cambiar, dejando en blanco los que desee mantener</h3>
+<div th:if="${message != null}" th:text="${message}">
+		</div>
+		
+
+	<form th:action="@{/manageOrderVist}" th:object="${order}" method="post">
+	
+		<label>Nº Pedido</label>
+		<input readonly type="text" th:value="${order.orderNumber}" th:name="orderNumber"/>
+		<br/>
+		<label>Cliente</label>
+		<input readonly type="text" th:value="${order.customer.username}" th:name="customer.username"/>
+		<br/>
+		<label>Fecha</label>
+		<input type="text" th:value="${order.date}" th:name="date"/>
+		<br/>
+		<label>Nº de seguimiento</label>
+		<input type="text" th:value="${order.trackingNumber}" th:name="trackingNumber"/>
+		<br/>
+		<label>Total</label>
+		<input type="text" th:value="${order.total}" th:name="total"/>
+		<br/>
+		<label>Estado</label>
+		<select  th:field="*{status}">
+			<!--<option th:value="${order.status}" selected></option>-->
+			<option th:value="'Finalizado'">Finalizado</option>
+			<option th:value="'Pagado'">Pagado</option>
+			<option th:value="'Enviado'">Enviado</option>
+			<option th:value="'No finalizado'">No finalizado</option>
+		</select>
+		<br/>
+	
+		<input type="submit" value="Update"/>
+	</form>
+		
+	
+</body>
+</html>

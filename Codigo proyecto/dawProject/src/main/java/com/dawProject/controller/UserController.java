@@ -41,10 +41,18 @@ public class UserController {
 		model.addAttribute("users", userService.findAll());
 		model.addAttribute("customers", customerService.findAll());
 		User user = obtenerUsuarioSesion(request);
+		System.out.println(user);
 		//Customer customer = customerService.findByusername(user.getUsername());
-		if(user.getRole().equals("admin"))
+		if(user == null) {
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Error! Se requiere ser administrador");
+			return "/user/login";	
+		}
+		else if(user.getRole().equals("admin"))
 			return "/admin/list";
 		else
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Error! Se requiere ser administrador");
 			return "/user/login";	
 	}
 	

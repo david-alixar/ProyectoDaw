@@ -35,6 +35,7 @@
 				<td><a th:href="@{'/detailOrder/'+${order.orderNumber}}">Ver detalles del pedido</a></td>
 				<!--<td><a th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td> -->
 				<td><a th:if="${order.status == 'Finalizado' and user.role == 'user'}" th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td>	
+				<td><a th:if="${user.role == 'admin'}" th:href="@{'/manageOrder/'+${order.orderNumber}}">Gestionar pedido</a></td>
 				
 			</tr>
 	</table>
