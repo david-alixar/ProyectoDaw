@@ -13,44 +13,36 @@
 <h3>Introduzca los datos que desea cambiar, dejando en blanco los que desee mantener</h3>
 <div th:if="${message != null}" th:text="${message}">
 		</div>
+		
 
 	<form th:action="@{/saveUpdateProduct}" th:object="${product}" method="post">
 	
-		<label>Contraseña antigua</label>
-		<input type="password" th:field="*{passwordOld}"/>
-		<br/>
-		<label>Nueva contraseña</label>
-		<input type="password" th:field="*{password}"/>
-		<br/>
-		<label>Repita la nueva contraseña</label>
-		<input type="password" th:field="*{password2}"/>
+		<label>Code</label>
+		<input readonly type="text" th:value="${product.productCode}" th:name="productCode"/>
 		<br/>
 		<label>Nombre</label>
-		<input type="text" th:field="*{name}"/>
+		<input type="text" th:field="*{productName}"/>
 		<br/>
-		<label>Apellidos</label>
-		<input type="text" th:field="*{lastname}"/>
+		<label>Marca</label>
+		<input type="text" th:field="*{brand}"/>
 		<br/>
-		<label>Email</label>
-		<input type="text" th:field="*{email}"/>
+		<label>Modelo</label>
+		<input type="text" th:field="*{model}"/>
 		<br/>
-		<label>Dirección</label>
-		<input type="text" th:field="*{address}"/>
+		<label>Descripción</label>
+		<input type="text" th:field="*{description}"/>
 		<br/>
-		<label>Teléfono</label>
-		<input type="text" th:field="*{phone}"/>
+		<label>Precio</label>
+		<input type="text" th:field="*{price}"/>
 		<br/>
-		<label>Ciudad</label>
-		<input type="text" th:field="*{city}"/>
+		<label>Cantidad</label>
+		<input type="text" th:value="-1" th:name="productAvailable"/>
 		<br/>
-		<label>Código postal</label>
-		<input type="text" th:field="*{postalcode}"/>
+		<label>Año</label>
+		<input type="text" th:field="*{year}"/>
 		<br/>
-		<label>País</label>
-		<input type="text" th:field="*{country}"/>
-		<br/>
-		<label>Estado</label>
-		<input type="text" th:field="*{state}"/>
+		<label>Imagen</label>
+		<input type="text" th:field="*{picture}"/>
 		<br/>
 	
 		<input type="submit" value="Update"/>

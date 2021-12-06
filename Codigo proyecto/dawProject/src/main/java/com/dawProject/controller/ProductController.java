@@ -43,8 +43,8 @@ public class ProductController {
 	
 	@GetMapping("/listProducts")
 	public String home(Model model, HttpServletRequest request){
-		User user = obtenerUsuarioSesion(request);
-		model.addAttribute("user", user);
+//		User user = obtenerUsuarioSesion(request);
+//		model.addAttribute("user", user);
 		model.addAttribute("products", productService.findAll());
 		return "/productsList";	
 	}
@@ -136,10 +136,41 @@ public class ProductController {
 	
 	@PostMapping("/saveUpdateProduct")
 	public String saveUpdateProduct(@ModelAttribute("product") Product product, Model model) {
-		productService.save(product);
+		
+		System.out.println(product.getPrice());
+		System.out.println(product.getProductAvailable());
+		System.out.println(product.getYear());
+		Product product2 = productService.findByProductCode(product.getProductCode());
+		if (!product.getProductName().equals("")) {
+			product2.setProductName(product.getProductName());
+		}
+		if (!product.getBrand().equals("")) {
+			product2.setBrand(product.getBrand());
+		}
+		if (!product.getModel().equals("")) {
+			product2.setModel(product.getModel());
+		}
+		if (!product.getDescription().equals("")) {
+			product2.setDescription(product.getDescription());
+		}
+		if (product.getPrice() != 0.0) {
+			product2.setPrice(product.getPrice());
+		}
+		if (product.getProductAvailable() != -1) {
+			product2.setProductAvailable(product.getProductAvailable());
+		}
+		if (product.getYear() != 0) {
+			product2.setYear(product.getYear());
+		}
+		if (!product.getPicture().equals("")) {
+			product2.setPicture(product.getPicture());
+		}
+		
+		product.setCategory(product2.getCategory());
+		productService.save(product2);
 		model.addAttribute("message", "Hecho! Producto actualizado");
-		model.addAttribute("products", productService.findAll());
-		return "productsList/user/welcomeAdmin";
+		//model.addAttribute("products", productService.findAll());
+		return "/admin/welcomeAdmin";
 	}
 	
 	@GetMapping("/productListCategory/{category}")
@@ -153,7 +184,6 @@ public class ProductController {
 		return "/productsList";	
 		
 	}
-	
 	
 	
 	private User obtenerUsuarioSesion(HttpServletRequest request) {
