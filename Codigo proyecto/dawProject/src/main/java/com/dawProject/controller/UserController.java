@@ -78,81 +78,84 @@ public class UserController {
 	}
 	
 	@GetMapping("/update")
-	public String update(Model model) {
-		model.addAttribute("update", new UpdateUsuarioForm());
-		return "/user/update";
+	public String update(Model model, HttpServletRequest request) {
+		HttpSession mysession = request.getSession(true);
+		User user = obtenerUsuarioSesion(request);
+		if(user == null) {
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Error! Se requiere estar autenticado");
+			return "/user/login";	
+		} else {
+			Customer customer = customerService.findByusername(user.getUsername());
+			model.addAttribute("customer", customer);
+			model.addAttribute("update", new UpdateUsuarioForm());
+			return "/user/update";
+		}
+	}
+	
+	@GetMapping("/updatePassword")
+	public String updatePassword(Model model, HttpServletRequest request) {
+		HttpSession mysession = request.getSession(true);
+		User user = obtenerUsuarioSesion(request);
+		if(user == null) {
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Error! Se requiere estar autenticado");
+			return "/user/login";	
+		} else {
+			model.addAttribute("update", new UpdateUsuarioForm());
+			return "/user/updatePassword";
+		}
 	}
 	
 	@PostMapping("/saveUpdate")
 	public String updateUser(@ModelAttribute("update") UpdateUsuarioForm update, Model model, HttpServletRequest request) {
 		HttpSession mysession = request.getSession(true);
 		User user = obtenerUsuarioSesion(request);
-		Customer customer = customerService.findByusername(user.getUsername());
-		String actualizado = "";
+		if(user == null) {
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Error! Se requiere estar autenticado");
+			return "/user/login";	
+		}
+		Customer customer = new Customer(user.getUsername(), update.getName(), update.getLastname(), update.getEmail(), update.getAddress(), update.getPhone(), update.getCity(), update.getPostalcode(), update.getCountry(), update.getState());
+
+		customerService.save(customer);
+		model.addAttribute("message", "Hecho! Información del usuario actualizada correctamente");
+		if(user.getRole().equals("admin")) {
+			return "/admin/welcomeAdmin";
+		} else  {
+			return "/user/welcomeUser";
+		}
+	}
+	
+	@PostMapping("/saveUpdatePassword")
+	public String saveUpdatePassword(@ModelAttribute("update") UpdateUsuarioForm update, Model model, HttpServletRequest request) {
+		HttpSession mysession = request.getSession(true);
+		User user = obtenerUsuarioSesion(request);
+		if(user == null) {
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Error! Se requiere estar autenticado");
+			return "/user/login";	
+		}
 		
 		if (!update.getPasswordOld().equals("")) {
 			User user2 = userService.loginString(user, update.getPasswordOld());
 			if (user2 != null) {
 				if (update.getPassword().equals(update.getPassword2())) {
 					user.setPassword(update.getPassword());
-					actualizado += "Contraseña actualizada con éxito. Por favor, inicie sesión de nuevo";
-					mysession.setAttribute("user", null);
 				} else {
 					model.addAttribute("message", "Error! Las nuevas contraseñas no coinciden");
-					return "/user/update";
+					return "/user/updatePassword";
 				}
 			}
 			else {
 				model.addAttribute("message", "Error! La contraseña antigua no coincide");
-				return "/user/update";
+				return "/user/updatePassword";
 			}
-		}	
+		} userService.save(user);
+		model.addAttribute("message", "Hecho! Contraseña actualizada correctamente. Por favor, inicie sesión de nuevo");
+		model.addAttribute("user", new User());
+		return "/user/login";
 		
-		if (!update.getAddress().equals("")) {
-			customer.setAddress(update.getAddress());
-			actualizado += "Dirección actualizada con éxito\n";
-		}
-		if (!update.getName().equals("")) {
-			customer.setName(update.getName());
-			actualizado += "Nombre actualizada con éxito<br>";
-		}
-		if (!update.getCity().equals("")) {
-			customer.setCity(update.getCity());
-			actualizado += "Ciudad actualizada con éxito\n";
-		}
-		if (!update.getCountry().equals("")) {
-			customer.setCountry(update.getCountry());
-			actualizado += "País actualizado con éxito\n";
-		}
-		if (!update.getEmail().equals("")) {
-			customer.setEmail(update.getEmail());
-			actualizado += "Email actualizado con éxito\n";
-		}
-		if (!update.getLastname().equals("")) {
-			customer.setLastname(update.getLastname());
-			actualizado += "Apellidos actualizados con éxito\n";
-		}
-		if (!update.getPhone().equals("")) {
-			customer.setPhone(update.getPhone());
-			actualizado += "Teléfono actualizado con éxito\n";
-		}
-		if (!update.getPostalcode().equals("")) {
-			customer.setPostalcode(update.getPostalcode());
-			actualizado += "Código postal actualizado con éxito\n";
-		}
-		if (!update.getState().equals("")) {
-			customer.setState(update.getState());
-			actualizado += "Estado actualizado con éxito\n";
-		}
-			
-		userService.update(user);
-		customerService.save(customer);
-		model.addAttribute("message", actualizado);
-		if(user.getRole().equals("admin")) {
-			return "/admin/welcomeAdmin";
-		} else  {
-			return "/user/welcomeUser";
-		}
 	}
 	
 	@GetMapping("/inicio")
@@ -185,6 +188,7 @@ public class UserController {
 			return "/user/welcomeUser";
 		}
 		else
+			model.addAttribute("user", new User());
 			return "/user/login";
 	}
 	
@@ -196,7 +200,9 @@ public class UserController {
 		userService.save(user);
 		model.addAttribute("customers", customerService.findAll());
 		model.addAttribute("users", userService.findAll());
-		return "redirect:/login";
+		model.addAttribute("message", "Usuario creado correctamente");
+		model.addAttribute("user", new User());
+		return "/user/login";
 	}
 	
 	@GetMapping("/delete/{username}")

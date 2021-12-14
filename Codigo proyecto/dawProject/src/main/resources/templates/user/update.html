@@ -2,7 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Update</title>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+<title>Actualizar datos</title>
 	<style>
 		a {
 		text-decoration:none}
@@ -10,56 +13,106 @@
 </head>
 <body>
 
-<h3>Introduzca los datos que desea cambiar, dejando en blanco los que desee mantener</h3>
-<div th:if="${message != null}" th:text="${message}">
+<!-- MENÚ SUPERIOR -->
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">	
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{'/inicio'}">
+			  <img th:src = "@{/img/2.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
+			  <img th:src = "@{/img/3.png}" alt="Online Store" style="width:50px;" class="rounded-pill"/>
+			</a>
 		</div>
+		<div class="container-fluid  justify-content-end">
+		  <ul class="navbar-nav">
+		 	 <li class="nav-item">
+				<a class="nav-link active" th:href="@{'/inicio'}">Inicio</a>
+			</li>
+			<div class="dropdown dropstart">
+   				 <button type="button" class="btn" data-bs-toggle="dropdown">
+      				<i class='fas fa-power-off' style='font-size:24px;color:lightgrey'></i>
+   				 </button>
+    					<ul class="dropdown-menu">
+    						<li>
+			 			 		<a class="dropdown-item" th:href="@{'/login'}">Cambiar de usuario</a>
+							</li> 
+							<li><hr class="dropdown-divider"></li>
+							<li>
+			 					 <a class="dropdown-item" th:href="@{'/updatePassword'}">Cambiar la contraseña</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+			 					 <a class="dropdown-item" th:href="@{'/logout)'}">Cerrar sesión</a>
+							</li> 
+    					</ul>
+  			</div>	  
+		  </ul>
+		</div>
+</nav>
 
-	<form th:action="@{/saveUpdate}" th:object="${update}" method="post">
-	
-		<label>Contraseña antigua</label>
-		<input type="password" th:field="*{passwordOld}"/>
-		<br/>
-		<label>Nueva contraseña</label>
-		<input type="password" th:field="*{password}"/>
-		<br/>
-		<label>Repita la nueva contraseña</label>
-		<input type="password" th:field="*{password2}"/>
-		<br/>
-		<label>Nombre</label>
-		<input type="text" th:field="*{name}"/>
-		<br/>
-		<label>Apellidos</label>
-		<input type="text" th:field="*{lastname}"/>
-		<br/>
-		<label>Email</label>
-		<input type="text" th:field="*{email}"/>
-		<br/>
-		<label>Dirección</label>
-		<input type="text" th:field="*{address}"/>
-		<br/>
-		<label>Teléfono</label>
-		<input type="text" th:field="*{phone}"/>
-		<br/>
-		<label>Ciudad</label>
-		<input type="text" th:field="*{city}"/>
-		<br/>
-		<label>Código postal</label>
-		<input type="text" th:field="*{postalcode}"/>
-		<br/>
-		<label>País</label>
-		<input type="text" th:field="*{country}"/>
-		<br/>
-		<label>Estado</label>
-		<input type="text" th:field="*{state}"/>
-		<br/>
-	
-		<input type="submit" value="Update"/>
-	</form>
-	<button><a href="/">Inicio</a></button>
-	<button><a href="/login">Iniciar sesión</a></button>
-	<button><a href="/register">Registrar usuario</a></button>
-	<button><a href="/delete">Eliminar usuario</a></button>
-	
-	
+
+
+
+<!-- CUERPO -->
+<div th:style="|background:url(@{/img/0-2.jpg}); height: 1300px|" class="p-5">
+		<div class="text-light p-5 mx-4 my-1 bg-light rounded text-dark">
+			<div th:if="${message != null}" th:text="${message}" class="h5 bg-warning p-2 rounded">
+			</div>
+
+			<div class = "p-1">
+				<h1 style="text-align: center"> Modifique los datos que desee cambiar, <br> dejando los que desee mantener </h1> 
+				<div class="d-flex justify-content-center">
+					<div style="background-color: rgba(0, 0, 0, 0.2);width:40%" class="p-3 mx-5 color-dark rounded">
+					
+					
+						<form th:action="@{/saveUpdate}" th:object="${update}" method="post">
+						    
+						     
+							<label class="py-1">Nombre</label>
+							<input type="text" class="form-control" th:value="${customer.name}" th:name="name"/>
+							<label class="py-1">Apellidos</label>
+							<input type="text" class="form-control" th:value="${customer.lastname}" th:name="lastname"/>
+							<label class="py-1">Email</label>
+							<input type="text" class="form-control" th:value="${customer.email}" th:name="email"/>
+							<label class="py-1">Dirección</label>
+							<input type="text" class="form-control" th:value="${customer.address}" th:name="address"/>
+							<label class="py-1">Teléfono</label>
+							<input type="text" class="form-control" th:value="${customer.phone}" th:name="phone"/>
+							<label class="py-1">Ciudad</label>
+							<input type="text" class="form-control" th:value="${customer.city}" th:name="city"/>
+							<label class="py-1">Código postal</label>
+							<input type="text" class="form-control" th:value="${customer.postalcode}" th:name="postalcode"/>
+							<label class="py-1">País</label>
+							<input type="text" class="form-control" th:value="${customer.country}" th:name="country"/>
+							<label class="py-1">Provincia/Estado</label>
+							<input type="text" class="form-control" th:value="${customer.state}" th:name="state"/>
+						    
+						    <div class="d-flex justify-content-center mt-5">
+						    	<button type="submit" class="btn btn-danger my-4" value="Update"/>Actualizar información</button>
+					  		</div>
+					  </form>
+				    </div>
+				</div>	
+					<div class="d-flex justify-content-center mt-5">
+						<a th:href="@{'/listProducts'}" class="btn btn-success">Ver todos los productos</a>
+					</div>			
+			</div>
+		</div>
+</div>
+<!-- FOOTER -->
+<footer class="bg-dark text-center text-white">
+		<div class="container p-4 pb-0">	
+		  <section>
+			<a class="navbar-brand" th:href="@{'/inicio'}">
+				<img th:src = "@{/img/2.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
+				<img th:src = "@{/img/3.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
+			  </a>
+		  </section>
+		</div>
+		<!-- FOOTER Copyright -->
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+		  © 2021 Copyright:
+		  <a class="text-white" th:href="@{'/inicio'}">OnlineStore.com</a>
+		</div>
+</footer>
+
 </body>
 </html>

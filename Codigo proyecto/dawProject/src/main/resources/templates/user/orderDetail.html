@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
 <title>Mi carrito</title>
 <style>
 		a {
@@ -9,39 +12,134 @@
 	</style>
 </head>
 <body>
-
-<div th:if="${message != null}" th:text="${message}">
+<!-- MENÚ SUPERIOR -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">	
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{'/inicio'}">
+			  <img th:src = "@{/img/2.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
+			  <img th:src = "@{/img/3.png}" alt="Online Store" style="width:50px;" class="rounded-pill"/>
+			</a>
 		</div>
+		<div class="container-fluid  justify-content-end">
+		  <ul class="navbar-nav">
+			<li class="nav-item">
+			  <a class="nav-link active" th:href="@{'/listProducts'}">Productos</a>
+			</li>
+			<div class="dropdown dropstart">
+   				 <button type="button" class="btn" data-bs-toggle="dropdown">
+      				<i class='fas fa-shopping-cart' style='font-size:24px;color:lightgrey'></i>
+   				 </button>
+    					<ul class="dropdown-menu">
+    						<li th:if="${user != null and user.role == 'user'}">
+			 			 		<a class="dropdown-item" th:href="@{'/cart'}">Mi carrito</a>
+							</li> 
+							 <li th:if="${user != null and user.role == 'user'}"><hr class="dropdown-divider"></li>
+							<li>
+			 					 <a th:if="${user != null and user.role == 'user'}"  class="dropdown-item" th:href="@{'/orders'}">Mis pedidos</a>
+			 					 <a th:if="${user != null and user.role == 'admin'}"  class="dropdown-item" th:href="@{'/orders'}">Pedidos</a>
+							</li>
+							
+							
+    					</ul>
+  			</div>
+			<div class="dropdown dropstart">
+   				 <button type="button" class="btn" data-bs-toggle="dropdown">
+      				<i class='fas fa-power-off' style='font-size:24px;color:lightgrey'></i>
+   				 </button>
+    					<ul class="dropdown-menu">
+    						<li>
+			 			 		<a class="dropdown-item" th:href="@{'/login'}">Cambiar de usuario</a>
+							</li> 
+							<li><hr class="dropdown-divider"></li>
+							<li>
+			 					 <a class="dropdown-item" th:href="@{'/update'}">Modificar datos</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+			 					 <a class="dropdown-item" th:href="@{'/logout'}">Cerrar sesión</a>
+							</li> 
+    					</ul>
+  			</div>	  
+		  </ul>
+		</div>
+</nav>
+<!-- CUERPO -->
+<div th:style="|background:url(@{/img/0-2.jpg}); height: 1000px|" class="p-5">
+		<div class="text-light p-5 mx-4 my-1 bg-light rounded text-dark">
+			<div th:if="${message != null}" th:text="${message}" class="h5 bg-warning p-2 rounded">
+			</div>
 
-	Detalle del pedido:
-
-	<table>
-		<tr>
-		<th>Nombre</th> 
-		<th>Marca</th>
-		<th>Modelo</th>
-		<th>Cantidad</th>
-		<th>Subtotal</th>
-		</tr>
-		<tbody>
-			<tr th:each="orderDetail : ${orderDetails}"
-			th:style="${orderDetailStat.odd}? 'background-color: lightgrey;':'background-color: beige'" 
-	                    	th:alt-title="${orderDetailStat.even}? 'even' : 'odd'">
-				<td th:text="${orderDetail.product.productName}"></td>
-				<td th:text="${orderDetail.product.brand}"></td>
-				<td th:text="${orderDetail.product.model}"></td>
-				<td th:text="${orderDetail.quantity}"></td>
-				<td th:text="${orderDetail.subtotal}"></td>
+			<div class = "p-1">
+				<h1> Detalle del pedido </h1> 
+				<table class="table table-hover my-3">
+					<thead>
+						<tr class="bg-danger text-white">
+							<th>Nombre</th> 
+							<th>Marca</th>
+							<th>Modelo</th>
+							<th>Cantidad</th>
+							<th>Precio unitario</th>
+							<th>Subtotal</th>
+						</tr>
+					<tbody>
+						<tr th:each="orderDetail : ${orderDetails}">
+							<td th:text="${orderDetail.product.productName}"></td>
+							<td th:text="${orderDetail.product.brand}"></td>
+							<td th:text="${orderDetail.product.model}"></td>
+							<td th:text="${orderDetail.quantity}"></td>
+							<td th:text="${orderDetail.product.price}"></td>
+							<td th:text="${orderDetail.subtotal}"></td>
+						</tr>
+					</tbody>	
+				</table>
 				
-			</tr>
-	</table>
-	<button><a href="/inicio">Inicio</a></button>
-	<button><a href="/listProducts">Productos</a></button>
-	<button><a href="/orders">Mis pedidos</a></button>
-	
-	
-	
-
+				<table class="table table-hover my-3">
+					<thead>
+						<tr class="bg-danger text-white">
+							<th>Estado del pedido</th> 
+							<th>Número de seguimiento</th>
+							<th>Nº de pedido</th>
+							<th>Total</th>						
+						</tr>
+					<tbody>
+						<tr> <td th:text="${order.status}"> </td>
+						<td th:text="${order.trackingNumber}"> </td>
+						<td th:text="${order.orderNumber}"> </td>
+						<td th:text="${order.total} + '€'"></td>
+						</tr>
+					</tbody>	
+				</table>
+				
+					<div class="d-flex">
+						<h5>Total pedido:</h5><p class="text-white"> _</p>
+						<h5 th:text="${order.total}"></h5><h5>€</h5>
+						<h5>Estado del pedido:</h5><p class="text-white"> _</p>
+						<h5 th:text="${order.status}"></h5>
+						<h5 th:if="${order.status == 'Enviado'}" >Número de seguimiento:</h5><p class="text-white"> _</p>
+						<h5 th:if="${order.status == 'Enviado'}" th:text="${order.trackingNumber}"></h5>
+					</div>		
+			</div>
+			<div class="justify-content-center">
+						<a th:href="@{'/orders'}" class="btn btn-success">Volver a pedidos</a>
+					</div>
+		</div>
+</div>
+<!-- FOOTER -->
+<footer class="bg-dark text-center text-white">
+		<div class="container p-4 pb-0">	
+		  <section>
+			<a class="navbar-brand" th:href="@{'/inicio'}">
+				<img th:src = "@{/img/2.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
+				<img th:src = "@{/img/3.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
+			  </a>
+		  </section>
+		</div>
+		<!-- FOOTER Copyright -->
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+		  © 2021 Copyright:
+		  <a class="text-white" th:href="@{'/inicio'}">OnlineStore.com</a>
+		</div>
+</footer>	
 
 </body>
 </html>

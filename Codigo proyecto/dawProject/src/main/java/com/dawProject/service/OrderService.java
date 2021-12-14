@@ -1,10 +1,12 @@
 package com.dawProject.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dawProject.model.Customer;
 import com.dawProject.model.Order;
 import com.dawProject.model.OrderDetail;
 import com.dawProject.repository.OrderRepository;
@@ -55,6 +57,46 @@ public class OrderService {
 		for (Order o: orderRepository.findAll()) {
 			if (o.getCustomer().getUsername().equals(customer)) {
 				list.add(o);
+			}
+		}
+		return list;
+	}
+	
+	public List<Order> findAllByStatus(String status, List<Order> orders) {
+		List<Order> list = new ArrayList<>();
+		for (Order o: orders) {
+			if (o.getStatus().equals(status)) {
+				list.add(o);
+			}
+		}
+		return list;
+	}
+	
+	public List<Order> findAllByDate(String date, List<Order> orders) {
+		List<Order> list = new ArrayList<>();
+		for (Order o: orders) {
+			if (o.getDate().equals(date)) {
+				list.add(o);
+			}
+		}
+		return list;
+	}
+	
+	public List<Customer> findAllByUsername() {
+		List<Customer> list = new ArrayList<>();
+		for (Order o: orderRepository.findAll()) {
+			if (!list.contains(o.getCustomer())) {
+				list.add(o.getCustomer());
+			}
+		}
+		return list;
+	}
+	
+	public List<String> findAllByDates(List<Order> orders) {
+		List<String> list = new ArrayList<>();
+		for (Order o: orders) {
+			if (!list.contains(o.getDate())) {
+				list.add(o.getDate());
 			}
 		}
 		return list;

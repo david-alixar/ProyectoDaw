@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dawProject.form.AltaProductoForm;
+import com.dawProject.form.UpdateUsuarioForm;
 import com.dawProject.model.*;
 import com.dawProject.service.*;
 
@@ -46,7 +47,8 @@ public class OrderController {
 		HttpSession mysession = request.getSession(true);
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("user", new User());
+			return "/user/login";
 		}
 		Customer customer = customerService.findByusername(user.getUsername());
 		Order order = orderService.findByCustomerPending(customer.getUsername());
@@ -65,15 +67,96 @@ public class OrderController {
 		Model model, HttpServletRequest request) {
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("user", new User());
+			return "/user/login";
 		}
 		else if (user.getRole().equals("admin")) {
 			model.addAttribute("orders", orderService.findAll());
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAll()));
 		}
 		else {
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAllByCustomer(user.getUsername())));
 			model.addAttribute("orders", orderService.findAllByCustomer(user.getUsername()));
 		}
+		model.addAttribute("customers", orderService.findAllByUsername());
 		model.addAttribute("user", user);
+		model.addAttribute("order", new Order());
+		return "/orders";
+	}
+	
+	@PostMapping("/filterStatus")
+	public String filterStatus(
+		Model model, HttpServletRequest request, @ModelAttribute("order") Order order) {
+		User user = obtenerUsuarioSesion(request);
+		if (user == null) {
+			model.addAttribute("user", new User());
+			return "/user/login";
+		}
+		else if (user.getRole().equals("admin")) {
+			model.addAttribute("orders", orderService.findAllByStatus(order.getStatus(),orderService.findAll()));
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAll()));
+		}
+		else {
+			model.addAttribute("orders", orderService.findAllByStatus(order.getStatus(), orderService.findAllByCustomer(user.getUsername())));
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAllByCustomer(user.getUsername())));
+		}
+		model.addAttribute("user", user);
+		model.addAttribute("message", "Pedidos filtrados por estado " + order.getStatus());
+		model.addAttribute("customers", orderService.findAllByUsername());
+		model.addAttribute("order", new Order());
+		return "/orders";
+	}
+	
+	@PostMapping("/filterUsername")
+	public String filterUsername(
+		Model model, HttpServletRequest request, @ModelAttribute("order") Order order) {
+		User user = obtenerUsuarioSesion(request);
+		if (user == null) {
+			model.addAttribute("user", new User());
+			return "/user/login";
+		}
+		else if (user.getRole().equals("user")) {
+			model.addAttribute("orders", orderService.findAllByCustomer(user.getUsername()));
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAllByCustomer(user.getUsername())));
+			model.addAttribute("customers", orderService.findAllByUsername());
+			model.addAttribute("user", user);
+			model.addAttribute("order", new Order());
+			return "/orders";
+		}
+		
+		model.addAttribute("orders", orderService.findAllByCustomer(order.getCustomer().getUsername()));
+		model.addAttribute("message", "Pedidos filtrados por usuario " + order.getCustomer().getUsername());
+		model.addAttribute("dates", orderService.findAllByDates(orderService.findAll()));
+		model.addAttribute("customers", orderService.findAllByUsername());
+		model.addAttribute("user", user);
+		model.addAttribute("order", new Order());
+		return "/orders";
+	}
+	
+	@PostMapping("/filterDate")
+	public String filterDate(
+		Model model, HttpServletRequest request, @ModelAttribute("order") Order order) {
+		User user = obtenerUsuarioSesion(request);
+		if (user == null) {
+			model.addAttribute("user", new User());
+			return "/user/login";
+		}
+		else if (user.getRole().equals("user")) {
+			model.addAttribute("orders", orderService.findAllByDate(order.getDate(),orderService.findAllByCustomer(user.getUsername())));
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAllByCustomer(user.getUsername())));
+			model.addAttribute("customers", orderService.findAllByUsername());
+			model.addAttribute("user", user);
+			model.addAttribute("message", "Pedidos filtrados por fecha " + order.getDate());
+			model.addAttribute("order", new Order());
+			return "/orders";
+		}
+		
+		model.addAttribute("orders",  orderService.findAllByDate(order.getDate(),orderService.findAll()));
+		model.addAttribute("dates", orderService.findAllByDates(orderService.findAll()));
+		model.addAttribute("message", "Pedidos filtrados por fecha " + order.getDate());
+		model.addAttribute("customers", orderService.findAllByUsername());
+		model.addAttribute("user", user);
+		model.addAttribute("order", new Order());
 		return "/orders";
 	}
 	
@@ -103,7 +186,9 @@ public class OrderController {
 			@PathVariable("productCode") int productCode, HttpServletRequest request) {
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("message", "Por favor, inicie sesión para realizar una compra");
+			model.addAttribute("user", new User());
+			return "/user/login";
 		}
 		Customer customer = customerService.findByusername(user.getUsername());
 		
@@ -147,7 +232,9 @@ public class OrderController {
 	public String buyProductVist(@ModelAttribute("productBuy") Product productBuy, Model model, HttpServletRequest request) {
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("message", "Por favor, inicie sesión para realizar una compra");
+			model.addAttribute("user", new User());
+			return "/user/login";
 		}
 		Customer customer = customerService.findByusername(user.getUsername());
 		
@@ -166,7 +253,7 @@ public class OrderController {
 		if (productAvailable >= productBuy.getProductAvailable()) { 
 		
 			if(orderDetail == null) {
-				orderDetail = new OrderDetail(productBuy.getProductAvailable(), product.getPrice(), product, order);
+				orderDetail = new OrderDetail(productBuy.getProductAvailable(), price, product, order);
 			} else {
 				orderDetail.setQuantity(orderDetail.getQuantity() + productBuy.getProductAvailable());
 				orderDetail.setSubtotal(orderDetail.getSubtotal() + price);
@@ -187,59 +274,14 @@ public class OrderController {
 		return "/user/cart";
 	}
 	
-//	@GetMapping("/buyProductVist/{productCode}/{quantity}")
-//	public String buyProductVist(
-//			Model model,
-//			@PathVariable("productCode") int productCode, @PathVariable("quantity") int quantity, HttpServletRequest request) {
-//		User user = obtenerUsuarioSesion(request);
-//		if (user == null) {
-//			return "redirect:/login";
-//		}
-//		Customer customer = customerService.findByusername(user.getUsername());
-//		
-//		Order order = orderService.findByCustomerPending(customer.getUsername());
-//		
-//		if (order == null) {
-//			order = new Order(LocalDate.now().toString(),"No finalizado", "Vacío", 0, customer);
-//			orderService.save(order);
-//		}
-//		
-//		Product product = productService.findByProductCode(productCode);
-//		OrderDetail orderDetail = orderDetailService.findByOrderDetailIdProduct(productCode, order.getOrderNumber());
-//		int productAvailable = product.getProductAvailable();
-//		float price = product.getPrice() * quantity;
-//		
-//		if (productAvailable >= quantity) { 
-//		
-//			if(orderDetail == null) {
-//				orderDetail = new OrderDetail(quantity, product.getPrice(), product, order);
-//			} else {
-//				orderDetail.setQuantity(orderDetail.getQuantity() + quantity);
-//				orderDetail.setSubtotal(orderDetail.getSubtotal() + price);
-//			}
-//		} else {
-//			model.addAttribute("message", "Error! Cantidad insuficiente para el producto seleccionado");
-//			model.addAttribute("products", productService.findAll());
-//			return "/productsList";
-//		}
-//		product.setProductAvailable(productAvailable -quantity);
-//		productService.save(product);
-//		order.setTotal(order.getTotal() + price);
-//		orderService.save(order);
-//		orderDetailService.save(orderDetail);
-//		model.addAttribute("orderDetails", orderDetailService.findCart(order.getOrderNumber()));
-//		model.addAttribute("message", "Producto añadido al carrito con éxito");
-//		model.addAttribute("total", order.getTotal());
-//		return "/user/cart";
-//		
-//	}
-	
 	@GetMapping("/dropCart")
 	public String dropCart(
 		Model model, HttpServletRequest request) {
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Es necesario iniciar sesión");
+			return "/user/login";
 		}
 		Customer customer = customerService.findByusername(user.getUsername());
 		Order order = orderService.findByCustomerPending(customer.getUsername());
@@ -264,14 +306,24 @@ public class OrderController {
 		Model model, HttpServletRequest request) {
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Es necesario iniciar sesión");
+			return "/user/login";
+		}
+		if (user.getRole().equals("admin")) {
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAll()));
+		} else {
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAllByCustomer(user.getUsername())));
 		}
 		Customer customer = customerService.findByusername(user.getUsername());
 		Order order = orderService.findByCustomerPending(customer.getUsername());
 		
 		orderService.changeStatus("Finalizado", order);
+		model.addAttribute("customers", orderService.findAllByUsername());
+		model.addAttribute("message", "Información del pedido actualizada con éxito");
 		model.addAttribute("orders", orderService.findAllByCustomer(user.getUsername()));
-	
+		model.addAttribute("order", new Order());
+		model.addAttribute("user", user);
 		return "/orders";
 	}
 	
@@ -281,14 +333,23 @@ public class OrderController {
 			@PathVariable("OrderNumber") int orderNumber, HttpServletRequest request) {
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("message", "Es necesario iniciar sesión");
+			model.addAttribute("user", new User());
+			return "/user/login";
+		}
+		
+		if (user.getRole().equals("admin")) {
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAll()));
+		} else {
+			model.addAttribute("dates", orderService.findAllByDates(orderService.findAllByCustomer(user.getUsername())));
 		}
 		Order order = orderService.findByOrderNumber(orderNumber);
 		
 		orderService.changeStatus("Pagado", order);
 		model.addAttribute("message", "Información del pedido actualizada con éxito");
 		model.addAttribute("orders", orderService.findAllByCustomer(user.getUsername()));
-		
+		model.addAttribute("user", user);
+		model.addAttribute("order", new Order());
 		return "/orders";
 		
 	}
@@ -299,9 +360,13 @@ public class OrderController {
 			@PathVariable("OrderNumber") int orderNumber, HttpServletRequest request) {
 		User user = obtenerUsuarioSesion(request);
 		if (user == null) {
-			return "redirect:/login";
+			model.addAttribute("message", "Es necesario iniciar sesión");
+			model.addAttribute("user", new User());
+			return "/user/login";
 		}
 		Order order = orderService.findByOrderNumber(orderNumber);
+		model.addAttribute("user", user);
+		model.addAttribute("order", order);
 		model.addAttribute("orderDetails", orderDetailService.findCart(orderNumber));
 		return "/user/orderDetail";
 		

@@ -41,6 +41,7 @@ public class ProductController {
 	@Autowired
 	private OrderService orderService;
 	
+	
 	@GetMapping("/listProducts")
 	public String home(Model model, HttpServletRequest request){
 		User user = obtenerUsuarioSesion(request);
@@ -51,33 +52,21 @@ public class ProductController {
 	
 	@GetMapping("/newProduct")
 	public String register(Model model, HttpServletRequest request) {
-		model.addAttribute("altaProductoForm", new AltaProductoForm());
 		User user = obtenerUsuarioSesion(request);
 		if (user==null) {
+			model.addAttribute("user", new User());
 			return "/user/login";
 		}
 		else if (user.getRole().equals("admin")) {
+			model.addAttribute("altaProductoForm", new AltaProductoForm());
+			model.addAttribute("categories", categoryService.findAll());
 			return "/admin/newProduct";
 		} else {
+			model.addAttribute("message", "No permitido");
 			return "/user/welcomeUser";
 		}
 	}
 	
-	
-//	@GetMapping("/update")
-//	public String update(Model model) {
-//		model.addAttribute("user", new User());
-//		return "/user/update";
-//	}
-//	
-//	@PostMapping("/saveUpdate")
-//	public String updateUser(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
-//		User user2 = obtenerUsuarioSesion(request);
-//		user.setUsername(user2.getUsername());
-//		userService.update(user);
-//		model.addAttribute("users", userService.findAll());
-//		return "/user/login";
-//	}
 	
 	@PostMapping("/saveProduct")
 	public String save(@ModelAttribute("altaProductoForm") AltaProductoForm altaProductoForm, Model model) {
@@ -85,6 +74,7 @@ public class ProductController {
 		Product product = new Product(altaProductoForm.getNombreProducto(),altaProductoForm.getDescripcion(),altaProductoForm.getPrecio(),altaProductoForm.getCantidad(),altaProductoForm.getImagen(),altaProductoForm.getMarca(),altaProductoForm.getModelo(),altaProductoForm.getYear(),category);
 		productService.save(product);
 		model.addAttribute("products", productService.findAll());
+		model.addAttribute("message", "Producto añadido con éxito");
 		return "/admin/welcomeAdmin";
 	}
 	
@@ -140,45 +130,19 @@ public class ProductController {
 		System.out.println(product.getPrice());
 		System.out.println(product.getProductAvailable());
 		System.out.println(product.getYear());
-//		Product product2 = productService.findByProductCode(product.getProductCode());
-//		if (!product.getProductName().equals("")) {
-//			product2.setProductName(product.getProductName());
-//		}
-//		if (!product.getBrand().equals("")) {
-//			product2.setBrand(product.getBrand());
-//		}
-//		if (!product.getModel().equals("")) {
-//			product2.setModel(product.getModel());
-//		}
-//		if (!product.getDescription().equals("")) {
-//			product2.setDescription(product.getDescription());
-//		}
-//		if (product.getPrice() != 0.0) {
-//			product2.setPrice(product.getPrice());
-//		}
-//		if (product.getProductAvailable() != -1) {
-//			product2.setProductAvailable(product.getProductAvailable());
-//		}
-//		if (product.getYear() != 0) {
-//			product2.setYear(product.getYear());
-//		}
-//		if (!product.getPicture().equals("")) {
-//			product2.setPicture(product.getPicture());
-//		}
-//		
-//		product.setCategory(product2.getCategory());
+
 		product.setCategory(categoryService.findById(product.getCategory().getCategorieId()));
 		productService.save(product);
 		model.addAttribute("message", "Hecho! Producto actualizado");
-		//model.addAttribute("products", productService.findAll());
 		return "/admin/welcomeAdmin";
 	}
 	
 	@GetMapping("/productListCategory/{category}")
-	public String productListCategory(
+	public String productListCategory(HttpServletRequest request,
 			Model model,
 			@PathVariable("category") int category) {
-		Product product = productService.findByProductCode(category);
+		User user = obtenerUsuarioSesion(request);
+		model.addAttribute("user", user);
 		
 		model.addAttribute("message", "Hecho! Vista filtrada por categoría");
 		model.addAttribute("products", productService.findAllCategory(category));

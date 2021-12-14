@@ -46,6 +46,7 @@ public class CategoryController {
 	
 	@PostMapping("/saveCategory")
 	public String save(@ModelAttribute("category") Category category, Model model) {
+		model.addAttribute("message", "Categoría añadida con éxito");
 		model.addAttribute("customers", categoryService.findAll());
 		categoryService.saveCategory(category);
 		return "/admin/welcomeAdmin";
