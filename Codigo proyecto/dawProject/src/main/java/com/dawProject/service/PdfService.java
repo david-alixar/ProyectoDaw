@@ -1,13 +1,22 @@
 package com.dawProject.service;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.stereotype.Component;
@@ -16,6 +25,7 @@ import org.springframework.stereotype.Component;
 public class PdfService {
 	
 	public String PDF() throws IOException {
+		
 		
 		PDDocument doc = null;
 	       try
@@ -98,6 +108,14 @@ public class PdfService {
 	           
 	           
 	           doc.save("document.pdf");
+	           
+//	           try {
+//	        	   File fichero = new File("document.txt");
+//	        	     File path = new File (fichero.getAbsolutePath());
+//	        	     Desktop.getDesktop().open(path);
+//	        	}catch (IOException ex) {
+//	        	     ex.printStackTrace();
+//	        	}
 	       }
 	       finally
 	       {
@@ -109,6 +127,22 @@ public class PdfService {
 		
 		return "";
 	}
+	
+	private void cargarDocumento(PDDocument doc, HttpServletResponse response) throws IOException {
+      
+		PDStream ps=new PDStream(doc);
+		InputStream is=ps.createInputStream();
+		
+		try { //(InputStream is = new FileInputStream(doc))
+			IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+			
+		} catch (final Exception e) {
+			
+		}
+	}
+	
+	
 	
 	
 

@@ -33,9 +33,12 @@
     						<li>
 			 			 		<a class="dropdown-item" th:href="@{'/login'}">Cambiar de usuario</a>
 							</li> 
-							<li><hr class="dropdown-divider"></li>
+							<li><hr th:href="@{'/logout'}" class="dropdown-divider"></li>
 							<li>
-			 					 <a class="dropdown-item" th:href="@{'/update'}">Modificar datos</a>
+			 					 <a th:href="@{'/update'}" class="dropdown-item">Modificar datos</a>
+							</li>
+							<li>
+			 					 <a th:href="@{'/updatePassword'}" class="dropdown-item" >Cambiar contraseña</a>
 							</li>
 							<li><hr class="dropdown-divider"></li>
 							<li>
@@ -69,7 +72,7 @@
 						</tr>
 				</table>
 					<div class="justify-content-center">
-						<a href="/newCategory" class="btn btn-success">Añadir nueva categoría</a>
+						<a th:href="@{'/newCategory'}" class="btn btn-success">Añadir nueva categoría</a>
 					</div>
 					
 			</div>

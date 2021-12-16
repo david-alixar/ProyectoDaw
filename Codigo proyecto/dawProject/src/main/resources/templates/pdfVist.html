@@ -1,0 +1,82 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/simpleLayout}"
+	xml:lang="es">
+<link rel="stylesheet" th:href="@{/css/base/base.css}" />
+<head>
+  <title>Manuales de ayuda</title>
+</head>
+<body>
+	<div layout:fragment="content" th:remove="tag">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card card-success card-outline">
+					<div class="card-header">
+						<h3 class="card-title" th:text="#{gestion.ayuda.titulo}"></h3>
+					</div>
+					<div class="card-body form-row">
+                        <div class="form-group col-md-12" th:if="${sinManuales}">
+				            <div class="col-sm-12 aviso">
+				               <div class="card bg-info">
+				                 <div class="card-header">
+				                   <div class="row">
+				                       <div class="col-sm-12">
+				                           <label th:text="#{gestion.ayuda.sinPermisos.titulo}"></label>
+				                       </div>               
+				                   </div>
+				                   <p class="card-text" th:text="#{gestion.ayuda.sinPermisos.descripcion}"></p>
+				                 </div>
+				               </div>
+				            </div>
+                        </div>
+                        
+						<div class="form-group col-md-6" th:each="AyudaDTO:${manuales}">
+							<div
+								th:attr="onclick=|cargarPDF('${AyudaDTO.id}', '${AyudaDTO.nombreManual}')|">
+								<em class="fas fa-book-open puntero"></em> <label
+									class="col-form-label col-form-label-sm puntero"
+									th:text="${AyudaDTO.nombreManual}"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card card-success card-outline collapsed-card"
+					id="manualTramitacion">
+					<div class="card-header">
+						<h3 class="card-title" th:text="#{gestion.ayuda.visor}"
+							id="nombreManual"></h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool btn-toggle"
+								data-widget="collapse"></button>
+						</div>
+					</div>
+					<div class="card-body" id="criterioAyuda">
+						<div class="form-row" id="pdfContainer">
+							<div class="form-group col" id="viewpdf"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block layout:fragment="scripts">
+		<script th:src="@{/js/pdfobject/pdfobject.js}"></script>
+		<script>
+		
+			function cargarPDF(idAyuda, nombreManual) {
+				document.getElementById("nombreManual").innerHTML = nombreManual;
+				document.getElementById("manualTramitacion").classList
+						.remove("collapsed-card");
+				document.getElementById("criterioAyuda").style.display = "block";
+				document.getElementById("pdfContainer").style.height = "875px";
+				PDFObject
+						.embed("gestion/ayuda/descarga/" + idAyuda, "#viewpdf");
+			}
+		</script>
+	</th:block>
+
+</body>
+</html>

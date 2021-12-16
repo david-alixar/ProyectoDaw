@@ -33,6 +33,16 @@ public class UserService {
 		return user;
 	}	
 	
+	public boolean findByusernameExt(String username) {
+		boolean existe = false;
+		for (User u: userRepository.findAll()) {
+			if (u.getUsername().equals(username)) {
+				existe = true;
+			}
+		}
+		return existe;
+	}
+	
 	public User save(User user) {	
 		String password_plaintext = user.getPassword();
 		user.setPassword(hashPassword(password_plaintext));

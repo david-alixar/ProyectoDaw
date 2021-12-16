@@ -194,6 +194,19 @@ public class UserController {
 	
 	@PostMapping("/saveUser")
 	public String save(@ModelAttribute("altaUsuarioForm") AltaUsuarioForm altaUsuarioForm, Model model) {
+		
+
+		if(userService.findByusernameExt(altaUsuarioForm.getUsername())) {
+			model.addAttribute("altaUsuarioForm", new AltaUsuarioForm());
+			model.addAttribute("message", "Error! Nombre de usuario no válido");
+			return "/user/register";
+		}
+		
+		if(!altaUsuarioForm.getPassword().equals(altaUsuarioForm.getPassword2())) {
+			model.addAttribute("altaUsuarioForm", new AltaUsuarioForm());
+			model.addAttribute("message", "Error! Las contraseñas no coinciden");
+			return "/user/register";
+		}
 		Customer customer = new Customer(altaUsuarioForm.getUsername(),altaUsuarioForm.getName(),altaUsuarioForm.getLastname(),altaUsuarioForm.getEmail(),altaUsuarioForm.getAddress(),altaUsuarioForm.getPhone(),altaUsuarioForm.getCity(),altaUsuarioForm.getPostalcode(),altaUsuarioForm.getCountry(),altaUsuarioForm.getState());
 		User user = new User(altaUsuarioForm.getUsername(),altaUsuarioForm.getPassword(),altaUsuarioForm.getRole(), customer);
 		customerService.save(customer);

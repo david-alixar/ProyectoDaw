@@ -6,6 +6,8 @@ public class AltaUsuarioForm {
 	
 	private String password;
 	
+	private String password2;
+	
 	private String role;
 	
 	private String picture;
@@ -42,6 +44,53 @@ public class AltaUsuarioForm {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getPassword2() {
+		return password2;
+	}
+
+	public void setPassword2(String password) {
+		this.password2 = password;
+	}
+
+	public AltaUsuarioForm(String username, String password, String password2, String role, String picture, String name,
+			String lastname, String email, String address, String phone, String city, String postalcode, String country,
+			String state) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.password2 = password2;
+		this.role = role;
+		this.picture = picture;
+		this.name = name;
+		this.lastname = lastname;
+		this.email = email;
+		this.address = address;
+		this.phone = phone;
+		this.city = city;
+		this.postalcode = postalcode;
+		this.country = country;
+		this.state = state;
+	}
+	
+	public AltaUsuarioForm(String username, String password, String role, String picture, String name,
+			String lastname, String email, String address, String phone, String city, String postalcode, String country,
+			String state) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.picture = picture;
+		this.name = name;
+		this.lastname = lastname;
+		this.email = email;
+		this.address = address;
+		this.phone = phone;
+		this.city = city;
+		this.postalcode = postalcode;
+		this.country = country;
+		this.state = state;
 	}
 
 	public String getRole() {

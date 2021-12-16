@@ -33,9 +33,12 @@
     						<li>
 			 			 		<a class="dropdown-item" th:href="@{'/login'}">Cambiar de usuario</a>
 							</li> 
-							<li><hr class="dropdown-divider"></li>
+							<li><hr th:href="@{'/logout'}" class="dropdown-divider"></li>
 							<li>
-			 					 <a class="dropdown-item" th:href="@{'/update'}">Modificar datos</a>
+			 					 <a th:href="@{'/update'}" class="dropdown-item">Modificar datos</a>
+							</li>
+							<li>
+			 					 <a th:href="@{'/updatePassword'}" class="dropdown-item" >Cambiar contraseña</a>
 							</li>
 							<li><hr class="dropdown-divider"></li>
 							<li>
@@ -47,7 +50,7 @@
 		</div>
 </nav>
 <!-- CUERPO -->
-<div th:style="|background:url(@{/img/0-2.jpg}); height: 700px|" class="p-5">
+<div th:style="|background:url(@{/img/0-2.jpg}); height: 1000px|" class="p-5">
 		<div class="text-light p-5 mx-4 my-1 bg-light rounded text-dark">
 			<div th:if="${message != null}" th:text="${message}" class="h5 bg-warning p-2 rounded">
 			</div>

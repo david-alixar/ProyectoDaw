@@ -29,17 +29,41 @@
 			<li class="nav-item">
 			  <a class="nav-link active" href="/listProducts">Productos</a>
 			</li>
+			<div th:if="${user != null}" th:href="@{'/logout'}" class="dropdown dropstart">
+   				 <button type="button" class="btn" data-bs-toggle="dropdown">
+      				<i class='fas fa-shopping-cart' style='font-size:24px;color:lightgrey'></i>
+   				 </button>
+    					<ul class="dropdown-menu">
+    						<li>
+			 			 		<a th:if="${user != null and user.role == 'user'}"class="dropdown-item" th:href="@{'/cart'}">Mi carrito</a>
+							</li> 
+							 <li th:if="${user != null and user.role == 'user'}"><hr class="dropdown-divider"></li>
+							<li>
+			 					 <a th:if="${user.role == 'user'}" class="dropdown-item" th:href="@{'/orders'}">Mis pedidos</a>
+			 					 <a th:if="${user.role == 'admin'}" class="dropdown-item" th:href="@{'/orders'}">Pedidos</a>
+							</li> 
+    					</ul>
+  			</div>
 			<div class="dropdown dropstart">
    				 <button type="button" class="btn" data-bs-toggle="dropdown">
       				<i class='fas fa-power-off' style='font-size:24px;color:lightgrey'></i>
    				 </button>
     					<ul class="dropdown-menu">
     						<li>
-			 			 		<a class="dropdown-item" href="/login">Iniciar sesión</a>
+    						<a th:if="${user != null}" th:href="@{'/login'}" class="dropdown-item">Cambiar de usuario</a>
+    						<a th:if="${user == null}" th:href="@{'/login'}" class="dropdown-item">Iniciar sesión</a>
 							</li> 
+							<li><hr th:if="${user != null}" th:href="@{'/logout'}" class="dropdown-divider"></li>
+							<li>
+			 					 <a th:if="${user != null}" th:href="@{'/update'}" class="dropdown-item">Modificar datos</a>
+							</li>
+							<li>
+			 					 <a th:if="${user != null}" th:href="@{'/updatePassword'}" class="dropdown-item" >Cambiar contraseña</a>
+							</li>
 							<li><hr class="dropdown-divider"></li>
 							<li>
-			 					 <a class="dropdown-item" href="/register">Registrarse</a>
+								<a th:if="${user != null}" th:href="@{'/logout'}" class="dropdown-item">Cerrar sesión</a>
+    							<a th:if="${user == null}" th:href="@{'/register'}" class="dropdown-item">Registrarse</a>
 							</li>
     					</ul>
   			</div>	  
@@ -47,63 +71,77 @@
 		</div>
 </nav>
 <!-- CUERPO -->
-
-<div style="background-image: url('http://localhost:9091//img/0-2.jpg'); height: 700px" class="p-5">
+<div th:style="|background:url(@{/img/0-2.jpg}); height: 900px|" class="p-5">
 		<div class="text-light p-5 mx-4 my-1 bg-light rounded text-dark">
-		
-
-<h4>Nombre del producto</h4>
-<p th:text="${product.productName}"> </p>
-<h4>Marca</h4>
-<p th:text="${product.brand}"> </p> 
-<h4>Modelo</h4>
-<p th:text="${product.model}"> </p> 
-<h4>Descripción</h4>
-<p th:text="${product.description}"> </p>
-<h4>Categoría</h4>
-<p> <a th:href="@{'/productListCategory/'+${product.category.categorieId}}"th:text="${product.category.categorieName}"></a></p>
-<h4>Precio</h4>
-<p th:text="${product.price}"></p>
-<h4>Imagen</h4>
-<img th:if="${product.picture != ''}" th:attr="src = ${product.picture}">
-<img th:if="${product.picture == ''}" src = "https://mvsccs.com/public/uploads/all/hwRJD.">
-															
-<p th:if="${product.picture != ''}" th:text="${product.picture}"> Producto agotado</p>
-<h4>Cantidad</h4>
-<p th:text="${product.productAvailable}"></p>
-<h4>Año</h4>
-<p th:text="${product.year}"></p>
-
-
-<form th:action="@{/buyProductVist}" th:object="${productBuy}" method="post">
-  <label> Cantidad:</label>
-  <input type="number" id="quantity" th:field="*{productAvailable}" value="1" name="quantity"  min="1" th:attr="max = ${product.productAvailable}">
-  <input th:attr="value = ${product.productCode}" th:name="productCode" type="hidden" />
-  <input type="submit" value="Añadir al carrito"/>
-  <p th:if="${product.productAvailable == 0}"> Producto agotado</p>
-</form>  
-  <!-- th:field="${quantity}" -->
-	<!--th:attr="value = ${product.productCode}-->
-<!--<a th:href="@{'/buyProduct/'+${product.productCode}+'/'+${product.productName}}">Añadir al carrito > </a>
-<a th:href="@{'/buyProduct/'+${product.productCode}+'/'+${quantityId}}">Añadir al carrito > </a> -->
-<!--th:href="@{/hello(pid=1,id=${person.id})}"-->	
-
-</div>
+			<h1>Detalles del producto </h1>
+			<div class="d-flex mt-5 justify-content-around">
+				<div>
+					<img th:if="${product.picture != ''}" th:attr="src = ${product.picture}">
+					<img th:if="${product.picture == ''}" src = "https://mvsccs.com/public/uploads/all/hwRJD.">
+				</div>
+				
+				<div class="ml-5">
+					<h3 class="text-secondary" th:text="${product.productName}"> </h3>
+					<h2 class="text-info" th:text="${product.price} +' €' "></h2>
+					<div>
+						<div class="d-flex">
+							<h5 class="mr-2">Categoría</h5>
+							<p> <a th:href="@{'/productListCategory/'+${product.category.categorieId}}"th:text="${product.category.categorieName}"></a></p>
+						</div>
+						<div class="d-flex">
+							<h5 class="mr-2">Marca</h5>
+							<p th:text="${product.brand}"> </p> 
+						</div>
+						<div class="d-flex">
+							<h5 class="mr-2">Modelo</h5>
+							<p th:text="${product.model}"> </p>
+						</div>
+						<div class="d-flex">
+							<h5 class="mr-2">Año</h5>
+							<p th:text="${product.year}"></p> 
+						</div>
+						
+						<div class="">
+							<h5>Descripción</h5>
+							<p th:text="${product.description}"> </p>
+							<div class="d-flex">
+								<h5>Disponibles</h5>
+								<p class="mx-3" th:text="${product.productAvailable}"></p>
+								<p  class="mx-3 p-1 rounded bg-danger text-white justify-center" th:if="${product.productAvailable == 0}"> Producto agotado</p>	
+							</div>
+							<form th:action="@{/buyProductVist}" th:object="${productBuy}" method="post">
+								
+								  <input type="number" id="quantity" th:field="*{productAvailable}" value="1" name="quantity"  min="1" th:attr="max = ${product.productAvailable}">
+								  <input th:attr="value = ${product.productCode}" th:name="productCode" type="hidden" />
+								  <input class="btn btn-success" type="submit" value="Añadir al carrito"/>
+								 </form>
+						
+						</div>
+					</div>
+				
+					
+				</div>
+			
+			</div>
+			
+	
+		</div>
+</div>		
 
 <!-- FOOTER -->
 <footer class="bg-dark text-center text-white">
 		<div class="container p-4 pb-0">	
 		  <section>
-			<a class="navbar-brand" href="/inicio">
-				<img src="/img/2.png" alt="Online Store" style="width:50px;" class="rounded-pill">
-				<img src="/img/3.png" alt="Online Store" style="width:50px;" class="rounded-pill">
+			<a class="navbar-brand" th:href="@{'/inicio'}">
+				<img th:src = "@{/img/2.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
+				<img th:src = "@{/img/3.png}" alt="Online Store" style="width:50px;" class="rounded-pill">
 			  </a>
 		  </section>
 		</div>
 		<!-- FOOTER Copyright -->
 		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
 		  © 2021 Copyright:
-		  <a class="text-white" href="/inicio">OnlineStore.com</a>
+		  <a class="text-white" th:href="@{'/inicio'}">OnlineStore.com</a>
 		</div>
 </footer>
 	

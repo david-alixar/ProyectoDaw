@@ -101,11 +101,13 @@ public class ProductController {
 	
 	@GetMapping("/productDetail/{productCode}")
 	public String buyProduct(
+			HttpServletRequest request,
 			Model model,
 			@PathVariable("productCode") int productCode) {
 		Product product = productService.findByProductCode(productCode);
 		Product product2 = new Product();
-		
+		User user = obtenerUsuarioSesion(request);
+		model.addAttribute("user", user);
 		model.addAttribute("product", product);
 		model.addAttribute("productBuy", product2);
 		return "/productDetailVist";
