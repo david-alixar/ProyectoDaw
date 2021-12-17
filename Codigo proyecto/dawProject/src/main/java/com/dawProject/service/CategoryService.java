@@ -2,7 +2,6 @@ package com.dawProject.service;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,8 +41,6 @@ public class CategoryService {
 		
 		if (!existe) {
 			categoryRepository.save(category);
-		} else {
-			//JOptionPane.showMessageDialog(null, "La categoría ya existe! IdCategoría: ");
 		}
 		return category;
 	}

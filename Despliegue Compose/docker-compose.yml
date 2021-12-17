@@ -20,10 +20,8 @@ services:
      - ./tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
      - ./tomcat/context.xml:/usr/local/tomcat/conf/Catalina/localhost/manager.xml:ro
      - ./tomcat/context.xml:/usr/local/tomcat/conf/Catalina/localhost/host-manager.xml:ro
-    #  - ./tomcat/RestServerCarLicense.war:/usr/local/tomcat/webapps/RestServerCarLicense.war
-    #  - ./tomcat/spring-starter-project.war:/usr/local/tomcat/webapps/spring-starter-project.war
      - ./tomcat/dawProject.war:/usr/local/tomcat/webapps/dawProject.war
-     - ./tomcat/proyecto2.war:/usr/local/tomcat/webapps/proyecto2.war
+     
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql2:3306/online_store?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       

@@ -165,7 +165,6 @@ public class OrderController {
 			Model model,
 			@PathVariable("orderNumber") int orderNumber) {
 		Order order = orderService.findByOrderNumber(orderNumber);
-		//order.setOrderNumber(orderNumber);
 		
 		model.addAttribute("order", order);
 		return "/admin/manageOrder";

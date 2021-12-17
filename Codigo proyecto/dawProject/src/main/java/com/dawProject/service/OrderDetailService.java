@@ -20,9 +20,7 @@ public class OrderDetailService {
 	}
 	
 	public List<OrderDetail> findCart(int orderDetailId) {
-		//List<OrderDetail> list = orderDetailRepository.findAll();
 		List<OrderDetail> list = new ArrayList<>();
-		//list.clear();
 		for (OrderDetail o: orderDetailRepository.findAll()) {
 			if (o.getOrder().getOrderNumber()==orderDetailId) {
 				list.add(o);

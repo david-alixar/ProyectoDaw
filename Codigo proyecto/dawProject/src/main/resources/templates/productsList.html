@@ -6,7 +6,7 @@
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
-<title>Products</title>
+<title>Productos</title>
 <style>
 		a {
 		text-decoration:none}
@@ -69,7 +69,6 @@
 </nav>
 <!-- CUERPO -->
 <div th:style="|background:url(@{/img/0-2.jpg}); height: 1500px|" class="p-5">
-<!--<div style="background-image: url('/img/0-2.jpg'); height: 1500px" class="p-5">-->
 		<div class="text-light p-5 mx-4 my-1 bg-light rounded text-dark">
 			<div th:if="${message != null}" th:text="${message}" class="h5 bg-warning p-2 rounded">
 			</div>
@@ -99,13 +98,11 @@
 							<td><a th:href="@{'/productDetail/'+${product.productCode}}"th:text="${product.productName}"></a></td>
 							<td th:text="${product.brand}"></td>
 							<td th:text="${product.model}"></td>
-							<!--<td><a th:href="@{'/productDetail/'+${product.productCode}}"th:text="${product.model}"></a></td>-->
 							<td th:text="${product.description}"></td>
 							<td><a th:href="@{'/productListCategory/'+${product.category.categorieId}}"th:text="${product.category.categorieName}"></a></td>
 							<td th:text="${product.price}"></td>
 							<td th:text="${product.productAvailable}"></td>
 							<td th:text="${product.year}"></td>
-							<!--<td><a th:href="@{'/buyProduct/'+${product.productCode}}">Añadir al carrito</a></td>-->
 							<td><a th:if="${user == null or user.role == 'user'}" th:href="@{'/buyProduct/'+${product.productCode}}">Añadir al carrito</a></td>
 							<td><a th:if="${user != null and user.role == 'admin'}" th:href="@{'/updateProduct/'+${product.productCode}}">Editar producto</a></td>
 						</tr>

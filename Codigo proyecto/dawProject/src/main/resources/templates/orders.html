@@ -63,7 +63,7 @@
 		</div>
 </nav>
 <!-- CUERPO -->
-<div th:style="|background:url(@{/img/0-2.jpg}); height: 1000px|" class="p-5">
+<div th:style="|background:url(@{/img/0-2.jpg}); height: 1200px|" class="p-5">
 		<div class="text-light p-5 mx-4 my-1 bg-light rounded text-dark">
 			<div th:if="${message != null}" th:text="${message}" class="h5 bg-warning p-2 rounded">
 			</div>
@@ -137,7 +137,6 @@
 							<td th:text="${order.total}"></td>
 							<td th:text="${order.status}"></td>
 							<td><a th:href="@{'/detailOrder/'+${order.orderNumber}}">Ver detalles</a></td>
-							<!--<td><a th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td> -->
 							<td><a th:if="${order.status == 'Finalizado' and user.role == 'user'}" th:href="@{'/markPaid/'+${order.orderNumber}}">Marcar como pagado</a></td>	
 							<td><a th:if="${user.role == 'admin'}" th:href="@{'/manageOrder/'+${order.orderNumber}}">Gestionar pedido</a></td>
 						</tr>
@@ -145,6 +144,19 @@
 					<div class="justify-content-center">
 						<a th:href="@{'/orders'}" class="btn btn-success">Ver todos los pedidos</a>
 					</div>
+			<div th:if="${user != null and user.role == 'user'}" class="bg-info text-white p-3  mt-4 rounded">
+				<h4 class="text-black">INFORMACIÓN SOBRE LOS PAGOS</h4>
+				<div class="d-flex justify-content-around">
+					<div>
+						<p>Por favor, realice una transferencia indicando su NOMBRE COMPLETO y el Nº de PEDIDO a la siguiente cuenta: </p>
+						<h5>IBAN: ES91 2100 0418 4502 0004 7654</h5>
+					</div>	
+					<div>
+						<img th:src = "@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmWbLOIISwawhN8eDUja5OS4SetbEpc4noig&usqp=CAU}" alt="Banco Sabadell" style="width:200px;" class="rounded-pill">
+					</div>
+				</div>
+				
+			</div>
 			</div>
 		</div>
 </div>

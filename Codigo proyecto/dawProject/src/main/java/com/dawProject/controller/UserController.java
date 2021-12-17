@@ -1,6 +1,5 @@
 package com.dawProject.controller;
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,17 +7,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
 import com.dawProject.form.*;
 import com.dawProject.model.Customer;
-import com.dawProject.model.Order;
 import com.dawProject.model.User;
 import com.dawProject.service.CustomerService;
 import com.dawProject.service.UserService;
@@ -70,10 +64,8 @@ public class UserController {
 	
 	@GetMapping("/logout")
 	public String logout(Model model, HttpServletRequest request) {
-		//HttpSession mysession = request.getSession();
 		HttpSession mysession = request.getSession(true);
 		mysession.setAttribute("user", null);
-		//mysession.invalidate();
 		return "redirect:/login";
 	}
 	
@@ -177,8 +169,11 @@ public class UserController {
 		HttpSession mysession = request.getSession(true);
 		mysession.setAttribute("user", user1);
 		User user2 = (User) mysession.getAttribute("user");
-		if(user2 == null)
+		if(user2 == null) {
+			model.addAttribute("user", new User());
+			model.addAttribute("message", "Nombre de usuario o contraseña no válidos");
 			return "/user/login";
+		}
 		else if(user2.getRole().equals("admin")) {
 			model.addAttribute("message", "Bienvenido, " + user.getUsername());
 			return "/admin/welcomeAdmin";
@@ -189,6 +184,7 @@ public class UserController {
 		}
 		else
 			model.addAttribute("user", new User());
+			model.addAttribute("message", "Nombre de usuario o contraseña no válidos");
 			return "/user/login";
 	}
 	
@@ -226,6 +222,7 @@ public class UserController {
 		User user = userService.findByusername(username);
 		
 		if (user == null) {
+			model.addAttribute("message", "La cuenta del usuario " + user.getUsername() + " ya ha sido deshabilitada del sistema");
 			return "/admin/list";
 		}
 		if(user.getRole().equals("admin")) {
@@ -234,7 +231,6 @@ public class UserController {
 			return "/admin/list";
 		} else {
 			userService.delete(user);
-			//customerService.delete(customer);
 			model.addAttribute("customers", customerService.findAll());
 			model.addAttribute("message", "La cuenta del usuario " + user.getUsername() + " ha sido eliminada con éxito");
 			return "/admin/list";	
@@ -261,27 +257,6 @@ public class UserController {
 		
 	}
 	
-//		@GetMapping("/delete")
-//	public String delete(Model model) {
-//		model.addAttribute("user", new User());
-//		return "/user/delete";
-//	}
-//	
-//	@GetMapping("/deleteUser2/{niduser}")
-//	public String delete2(
-//			Model model,
-//			@PathVariable("niduser") String niduser) {
-//		userService.deleteByNid(Integer.parseInt(niduser));
-//		return "redirect:/users";
-//	}
-//	
-//	@PostMapping("/deleteUser")
-//	public String deleted(@ModelAttribute("user") User user, Model model) {
-//		Customer customer = customerService.findByusername(user.getUsername());
-//		customerService.delete(customer);
-//		userService.delete(user);
-//		return "/user/login";
-//	}
 	
 	private User obtenerUsuarioSesion(HttpServletRequest request) {
 		HttpSession session = request.getSession();

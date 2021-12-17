@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
-import com.dawProject.model.Customer;
 import com.dawProject.model.User;
 import com.dawProject.repository.UserRepository;
 
@@ -52,8 +51,7 @@ public class UserService {
 	}
 	
 	public static String hashPassword(String password_plaintext) {
-//		String salt = BCrypt.gensalt(12);
-//		String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
 
 		return(BCrypt.hashpw(password_plaintext, BCrypt.gensalt(12)));
 	}
@@ -66,13 +64,7 @@ public class UserService {
 		return user;
 	}
 	
-	
-//	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		 
-//		HttpSession misession= request.getSession(true);
-//		
-//		 
-//	}
+
 	
 	public User login(User user) {
 		 ModelMap model = null;
@@ -85,10 +77,6 @@ public class UserService {
 					System.out.println(fecha);
 					System.out.println("Login");
 				}
-//				if(user.getPassword().equals(u.getPassword())) {
-//					//model.addAttribute("user", u);
-//					find = u;
-//				}	
 			}
 		}
 		return find;
@@ -105,10 +93,6 @@ public class UserService {
 					System.out.println(fecha);
 					System.out.println("Login");
 				}
-//				if(user.getPassword().equals(u.getPassword())) {
-//					//model.addAttribute("user", u);
-//					find = u;
-//				}	
 			}
 		}
 		return find;

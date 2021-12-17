@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.dawProject.model.Customer;
 import com.dawProject.model.Order;
-import com.dawProject.model.OrderDetail;
 import com.dawProject.repository.OrderRepository;
 
 @Service
